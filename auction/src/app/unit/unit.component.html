@@ -1,0 +1,12 @@
+<div class="productDetail">
+  <p>
+    产品详情
+    {{unitId}}
+  </p>
+  <span [routerLink]="['./']">产品信息</span>
+  <span [routerLink]="['./seller',99]">销售员信息</span>
+  <a [routerLink]="[{outlets:{aux:'chat'}}]">开始聊天</a>
+  <a [routerLink]="[{outlets:{aux:null}}]">结束聊天</a>
+  <router-outlet></router-outlet>
+  <router-outlet name="aux"></router-outlet>
+</div>
