@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {letProto} from "rxjs/operator/let";
+// import {letProto} from "rxjs/operator/let";
+// import {letProto} from "rxjs";
 
 @Component({
   selector: 'app-stars',
@@ -9,15 +10,16 @@ import {letProto} from "rxjs/operator/let";
 export class StarsComponent implements OnInit {
 
   @Input()
-  private  rating:number=0;
+  private  rating:number =0;
   private  stars:boolean[];
   constructor() { }
 
   ngOnInit() {
     this.stars=[];
-    for (let i=1;i<=5;i++){
+    for (let i=1;i<=5;i++) {
       this.stars.push(i>this.rating);
     }
+    console.log(this.stars);
   }
 
 }

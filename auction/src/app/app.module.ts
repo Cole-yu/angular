@@ -14,6 +14,10 @@ import { UnitComponent} from './unit/unit.component';
 import { ProductDescComponent } from './product-desc/product-desc.component';
 import { SellerInfoComponent } from './seller-info/seller-info.component';
 import { ChatComponent } from './chat/chat.component';
+import {UnsavedGuard} from './guard/unsaved.guard';
+import {AuthGuard} from './guard/auth.guard';
+import { LoginComponent } from './login/login.component';
+import { FirstpageComponent } from './firstpage/firstpage.component';
 
 
 @NgModule({
@@ -30,12 +34,14 @@ import { ChatComponent } from './chat/chat.component';
     ProductDescComponent,
     SellerInfoComponent,
     ChatComponent,
+    LoginComponent,
+    FirstpageComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [ ],
+  providers: [AuthGuard,UnsavedGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
