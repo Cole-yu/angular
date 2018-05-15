@@ -1,6 +1,14 @@
 .carousel-container{
   margin-bottom: 40px;
 }
-.firstpage{
+.firstPage{
   padding-top: 70px;
+}
+.container{
+  padding: 0;
+}
+@media (min-width: 1600px){
+  .container {
+    width: 1600px;
+  }
 }

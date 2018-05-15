@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {Routes, RouterModule, Router} from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
@@ -18,6 +17,10 @@ import {UnsavedGuard} from './guard/unsaved.guard';
 import {AuthGuard} from './guard/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { FirstpageComponent } from './firstpage/firstpage.component';
+import { AboutUSComponent } from './about-us/about-us.component';
+import { ContactUSComponent } from './contact-us/contact-us.component';
+import { WebMapComponent } from './web-map/web-map.component';
+import { CompanyNEWSComponent } from './company-news/company-news.component';
 
 
 @NgModule({
@@ -36,6 +39,10 @@ import { FirstpageComponent } from './firstpage/firstpage.component';
     ChatComponent,
     LoginComponent,
     FirstpageComponent,
+    AboutUSComponent,
+    ContactUSComponent,
+    WebMapComponent,
+    CompanyNEWSComponent,
   ],
   imports: [
     BrowserModule,

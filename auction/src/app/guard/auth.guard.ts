@@ -38,7 +38,7 @@ interface danActivate{// 重新定义了一个本地的路由守卫接口，实�
 
 export class AuthGuard implements danActivate{
   canActivate() {
-    let loggedIn:Boolean = Math.random() < 0.3;
+    let loggedIn:Boolean = Math.random() < 0.5;
 
     if(!loggedIn){
       console.log("用户未登录");

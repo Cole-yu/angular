@@ -7,11 +7,11 @@ import {Router, ActivatedRoute, ParamMap, Params} from '@angular/router';   // �
   styleUrls: ['./unit.component.css']
 })
 export class UnitComponent implements OnInit {
-  public  unitId: number;
+  public  unitTitle: string;
   constructor(private route: ActivatedRoute,private router: Router,) { }
 
   ngOnInit() {
-    this.route.params.subscribe((params:Params)=>this.unitId=params['id']);   // 参数订阅
+    this.route.params.subscribe((params:Params)=>this.unitTitle=params['title']);   // 参数订阅
   }
 
 }

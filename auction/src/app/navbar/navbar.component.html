@@ -12,11 +12,14 @@
     </div>
     <div class="collapse navbar-collapse navbar-ex1-collapse">
       <ul class="nav navbar-nav">
-        <li><a href="#">关于我们</a></li>
-        <li><a href="#">联系我们</a></li>
-        <li><a href="#">网站地图</a></li>
-        <li><a href="#">关于我们</a></li>
+        <li><a [routerLink]='["/user/aboutUS"]'>关于我们</a></li>
+        <li><a [routerLink]='["/user/contactUS"]'>联系我们</a></li>
+        <li><a [routerLink]='["/user/webMAP"]'>网站地图</a></li>
+        <li><a [routerLink]='["/user/news"]'>公司公告</a></li>
       </ul>
+      <a class="navbar-brand pull-right" [routerLink]='["/login"]'>
+        <span class="logout">注销</span>
+      </a>
     </div>
   </div>
 </nav>

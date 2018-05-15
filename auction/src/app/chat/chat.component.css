@@ -1,8 +1,10 @@
 .chat{
-  background: green;
+  border:solid 1px #ddd;
+  color:#333;
+  border-radius: 5px;
+  padding: 10px;
   height: 100px;
-  width: 20%;
-  float: left;
+  width: 100%;
   display: inline-block;
   box-sizing: border-box;
 }

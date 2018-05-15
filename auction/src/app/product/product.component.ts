@@ -8,7 +8,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 })
 export class ProductComponent implements OnInit {
   private  products:Array<Product>;
-  private  imgUrl='http://placehold.it/320x150';
+  private  imgUrl='http://placehold.it/360x150';
   constructor() { }
 
   ngOnInit() { // 实例化生命周期钩子

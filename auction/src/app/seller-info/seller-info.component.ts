@@ -8,11 +8,11 @@ import {ActivatedRoute, Params} from '@angular/router';
 })
 export class SellerInfoComponent implements OnInit {
 
-  private sellerId:number;
+  private sellerName:number;
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.route.params.subscribe((params:Params)=>this.sellerId=params['id']);   //参数订阅
+    this.route.params.subscribe((params:Params)=>this.sellerName=params['name']);   // 参数订阅
   }
 
 }
