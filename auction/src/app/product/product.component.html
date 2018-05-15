@@ -1,5 +1,5 @@
 <div style="margin-top: 30px;">
-  <div *ngFor="let product of products" class="col-md-4 col-sm-4 col-lg-4" [routerLink]=" [ './unit', product.title ] ">
+  <div *ngFor="let product of products" class="col-md-4 col-sm-4 col-lg-4" [routerLink]=" [ './unit', product.id ] ">
     <div class="thumbnail">
       <img [src]="imgUrl" alt="">
       <div class="caption">

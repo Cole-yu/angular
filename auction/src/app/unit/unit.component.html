@@ -1,8 +1,30 @@
 <div class="productDetail">
   <p>
     产品详情
-    {{unitTitle}}
   </p>
+  <p>
+    产品名称
+    {{product.title}}
+  </p>
+  <p>
+    价格：{{product.price}}元
+  </p>
+  <div>
+    <p class="pull-right">{{comments.length}}</p>
+    <p><app-stars [rating]="product.rating"></app-stars></p>
+  </div>
+  <div>
+    <div class="row" *ngFor="let comment of comments">
+      <hr>
+      <div class="col-md-12">
+        <app-stars [rating]="comment.rating"></app-stars>
+        <span>{{comment.user}}</span>
+        <span>{{comment.timestamp}}</span>
+        <p>{{comment.content}}</p>
+      </div>
+    </div>
+  </div>
+
   <div>
     <span [routerLink]="['./']">产品信息</span>
     <span [routerLink]="['./seller','吴萱仪']">销售员信息</span>

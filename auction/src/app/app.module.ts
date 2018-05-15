@@ -21,6 +21,7 @@ import { AboutUSComponent } from './about-us/about-us.component';
 import { ContactUSComponent } from './contact-us/contact-us.component';
 import { WebMapComponent } from './web-map/web-map.component';
 import { CompanyNEWSComponent } from './company-news/company-news.component';
+import {ProductService} from './share/product.service';
 
 
 @NgModule({
@@ -48,7 +49,7 @@ import { CompanyNEWSComponent } from './company-news/company-news.component';
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [AuthGuard,UnsavedGuard],
+  providers: [AuthGuard,UnsavedGuard,ProductService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

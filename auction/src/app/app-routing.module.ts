@@ -20,8 +20,8 @@ const  routes: Routes = [
     { path: 'login' , component:LoginComponent},
     { path:'user',component:FirstpageComponent,children:[
         { path: '' , component:HomeComponent},
-        { path: 'home' , component:HomeComponent},
-        { path:'unit/:title',component:UnitComponent,children:[
+        { path: 'home', component:HomeComponent},
+        { path:'unit/:id',component:UnitComponent,children:[
             {path:'',component:ProductDescComponent},
             {path:'seller/:name',component:SellerInfoComponent},
             {path:'chat',component:ChatComponent,outlet:'aux'},
