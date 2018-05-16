@@ -8,14 +8,18 @@ import {Comment, Product, ProductService} from '../share/product.service';   // 
   styleUrls: ['./unit.component.css']
 })
 export class UnitComponent implements OnInit {
-  public  product:Product;
+  public product:Product;
   public comments:Comment[];
-  constructor(private route: ActivatedRoute,private router: Router,private productService:ProductService) { }
-  private unidId:number;
+
+  constructor(private routerInfo: ActivatedRoute,private router: Router,private productService:ProductService) {
+
+  }
+
+  private unitId:number;
   ngOnInit() {
-    this.unidId=this.route.snapshot.params['id'];
-    this.product=this.productService.getProduct(this.unidId);
-    this.comments=this.productService.getCommentForProduct(this.unidId);
+    this.unitId=this.routerInfo.snapshot.params['id'];
+    this.product=this.productService.getProduct(this.unitId);
+    this.comments=this.productService.getCommentForProduct(this.unitId);
 
    // this.route.params.subscribe((params:Params)=>this.unitId=params['id']);   // 参数订阅
   }
