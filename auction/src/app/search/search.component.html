@@ -1,7 +1,7 @@
 <form name="searchForm" role="form">
   <div class="form-group">
     <label>商品名称</label>
-    <input type="text" id="productTittle" placeholder="商品名称" class="form-control" >
+    <input type="text" id="productTittle" placeholder="商品名称" class="form-control" [formControl]="searchInput" >
   </div>
   <div class="form-group">
     <label for="product">商品价格</label>

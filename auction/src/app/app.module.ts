@@ -22,6 +22,9 @@ import { ContactUSComponent } from './contact-us/contact-us.component';
 import { WebMapComponent } from './web-map/web-map.component';
 import { CompanyNEWSComponent } from './company-news/company-news.component';
 import {ProductService} from './share/product.service';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { RegistrationComponent } from './registration/registration.component';
+import { SignInComponent } from './sign-in/sign-in.component';
 
 
 @NgModule({
@@ -44,10 +47,14 @@ import {ProductService} from './share/product.service';
     ContactUSComponent,
     WebMapComponent,
     CompanyNEWSComponent,
+    RegistrationComponent,
+    SignInComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    FormsModule,
+    AppRoutingModule,
+    ReactiveFormsModule
   ],
   providers: [AuthGuard,UnsavedGuard,ProductService],
   bootstrap: [AppComponent]

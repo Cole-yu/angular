@@ -1,3 +1,59 @@
-<p>
-  web-map works!
-</p>
+<!--响应式表单-->
+<div>响应式表单及表单校验学习</div>
+<input type="text" [formControl]="test">
+<form [formGroup]="formModal" (submit)="onSubmit()">
+  <div class="form-group">
+    用户名:
+    <input type="text" class="form-control" formControlName="username" placeholder="请输入用户名">
+  </div>
+  <div [hidden]="!formModal.hasError('required','username')" class="error-tips">
+    用户名是必填项
+  </div>
+  <div [hidden]="!formModal.hasError('minlength','username')" class="error-tips">
+    用户名的最小长度为6
+  </div>
+  <div formGroupName="dateRange">
+    起始日期: <input type="date" class="form-control" formControlName="from">
+    结束日期： <input type="date" class="form-control" formControlName="to">
+  </div>
+  <hr>
+  <div class="form-group" formGroupName="phone">
+    手机号:
+    <input type="text" class="form-control" formControlName="mobilePhone">
+  </div>
+  <hr>
+  <div>
+    <ul formArrayName="emails">
+      邮箱账号:
+      <li *ngFor="let e of this.formModal.get('emails').controls;let i=index" >
+        <input type="text" class="form-control" [formControlName]="i">
+      </li>
+    </ul>
+    <button type="submit" class="btn btn-default" (click)="addEmail()">增加Email</button>
+  </div>
+  <hr>
+  <div class="form-group" formGroupName="passwordGroup">
+    <div class="form-group">
+      密码: <input type="password" class="form-control" formControlName="password" >
+    </div>
+    <div [hidden]="!formModal.hasError('required',['passwordGroup','password'])" class="error-tips">
+      密码是必填项
+    </div>
+    <div [hidden]="!formModal.hasError('minlength',['passwordGroup','password'])" class="error-tips">
+      密码的最小长度为6
+    </div>
+    <div class="form-group">
+      确认密码: <input type="password" class="form-control" formControlName="repeatPassword">
+    </div>
+    <div [hidden]="!formModal.hasError('equal','passwordGroup')" class="error-tips">
+      {{formModal.getError('equal','passwordGroup')?.desc}}
+    </div>
+  </div>
+  <div>
+    <button type="submit" class="btn btn-default col-sm-12">保存</button>
+  </div>
+</form>
+
+<!--整个表单的校验结果true时，显示valid-->
+<div>整个表单的校验结果:{{formModal.status}}</div>
+

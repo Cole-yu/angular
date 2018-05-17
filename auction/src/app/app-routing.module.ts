@@ -14,10 +14,15 @@ import {AboutUSComponent} from './about-us/about-us.component';
 import {ContactUSComponent} from './contact-us/contact-us.component';
 import {CompanyNEWSComponent} from './company-news/company-news.component';
 import {WebMapComponent} from './web-map/web-map.component';
+import {RegistrationComponent} from './registration/registration.component';
+import {SignInComponent} from './sign-in/sign-in.component';
 
 const  routes: Routes = [
     { path:'',redirectTo:'login',pathMatch:'full'},
-    { path: 'login' , component:LoginComponent},
+    { path: 'login' , component:LoginComponent,children:[
+        { path:'',component:SignInComponent},
+        { path: 'regist' , component:RegistrationComponent},
+      ]},
     { path:'user',component:FirstpageComponent,children:[
         { path: '' , component:HomeComponent},
         { path: 'home', component:HomeComponent},

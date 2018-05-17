@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import * as THREE from '../../assets/three.js'  // 在所需的组件中引入第三方模块
+import * as THREE from '../../assets/three.js'
+import {Observable} from 'rxjs';  // 在所需的组件中引入第三方模块
 
 @Component({
   selector: 'app-login',
@@ -8,7 +9,8 @@ import * as THREE from '../../assets/three.js'  // 在所需的组件中引入�
 })
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
     // let particle_no = 25;
