@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContactUSComponent implements OnInit {
 
+  size:number=7;
+
   constructor() { }
 
   ngOnInit() {

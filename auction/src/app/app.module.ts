@@ -25,9 +25,12 @@ import {ProductService} from './share/product.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { RegistrationComponent } from './registration/registration.component';
 import { SignInComponent } from './sign-in/sign-in.component';
+import { MultiplePipe } from './pipe/multiple.pipe';
+import { FilterPipe } from './pipe/filter.pipe';
 
 
 @NgModule({
+  // 声明组件和管道
   declarations: [
     AppComponent,
     NavbarComponent,
@@ -49,6 +52,8 @@ import { SignInComponent } from './sign-in/sign-in.component';
     CompanyNEWSComponent,
     RegistrationComponent,
     SignInComponent,
+    FilterPipe,
+    MultiplePipe,
   ],
   imports: [
     BrowserModule,
@@ -56,7 +61,7 @@ import { SignInComponent } from './sign-in/sign-in.component';
     AppRoutingModule,
     ReactiveFormsModule
   ],
-  providers: [AuthGuard,UnsavedGuard,ProductService],
+  providers: [AuthGuard,UnsavedGuard,ProductService],// 提供器：服务和模块
   bootstrap: [AppComponent]
 })
 export class AppModule { }
