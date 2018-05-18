@@ -27,6 +27,9 @@ import { RegistrationComponent } from './registration/registration.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { MultiplePipe } from './pipe/multiple.pipe';
 import { FilterPipe } from './pipe/filter.pipe';
+import { OutputComponent } from './contact-us/output/output.component';
+import { OrderComponent } from './contact-us/order/order.component';
+import { LifeComponent } from './company-news/life/life.component';
 
 
 @NgModule({
@@ -53,7 +56,10 @@ import { FilterPipe } from './pipe/filter.pipe';
     RegistrationComponent,
     SignInComponent,
     FilterPipe,
+    OutputComponent,
+    OrderComponent,
     MultiplePipe,
+    LifeComponent,
   ],
   imports: [
     BrowserModule,

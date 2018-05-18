@@ -2,3 +2,16 @@
   <button class="close" type="button">&times;</button>
 </p>
 <div>自己写的管道，size原始值为7，multiple管道操作后结果为:{{size|multiple:3}}</div>
+<hr>
+<div>
+  <h3>学习输入/输出属性，向组件外发射事件，中间人模式</h3>
+  <h3>无共同父组件时，可以用可注入的服务作为中间人</h3>
+  <div>
+    <p>这里是父组件</p>
+    父组件收到的股票代码名称是{{priceQuote1.stockCode}},父组件收到的股票价格是{{priceQuote1.lastPrice|number:'2.2-2'}}
+  </div>
+  <hr>
+  <app-output (buy)="priceQuoteHandler($event)" (lastPrice)="priceQuoteHandler1($event)"></app-output>
+  <hr>
+  <app-order [priceQuote]="priceQuote"></app-order>
+</div>
