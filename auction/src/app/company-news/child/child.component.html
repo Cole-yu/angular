@@ -1,0 +1,10 @@
+<div>
+  <h2>这里是child组件</h2>
+  <div>问候语：{{greeting}}</div>
+  <div>姓名：{{user.name}}</div>
+  <div>消息：<input type="text" [(ngModel)]="message"></div>
+  <hr>
+  <div>父组件投影内容到子组件：</div>
+  <ng-content select=".header"></ng-content>ed
+  <ng-content select=".footer"></ng-content>
+</div>

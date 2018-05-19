@@ -3,7 +3,7 @@ import {
   OnInit, SimpleChanges
 } from '@angular/core';
 
-let logIndex:number;
+let logIndex:number=1;
 
 @Component({
   selector: 'app-life',
@@ -50,7 +50,7 @@ export class LifeComponent implements OnInit,OnChanges,DoCheck,AfterContentInit,
   }
 
   ngOnDestroy() {
-    this.logIt('ngOnDestroy');
+    this.logIt('ngOnDestroy');// 用于清除定时器，取消订阅，解除引用资源等操作
   }
 
   constructor() {

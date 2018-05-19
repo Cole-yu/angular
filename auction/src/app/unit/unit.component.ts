@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap, Params} from '@angular/router';
 import {Comment, Product, ProductService} from '../share/product.service';   // 路由功能
 
@@ -9,7 +9,14 @@ import {Comment, Product, ProductService} from '../share/product.service';   // 
 })
 export class UnitComponent implements OnInit {
   public product:Product;
+
   public comments:Comment[];
+
+  newRating:number=5;
+
+  newComment:string='';
+
+  isCommentHide:boolean=true;
 
   constructor(private routerInfo: ActivatedRoute,private router: Router,private productService:ProductService) {
 
@@ -23,5 +30,19 @@ export class UnitComponent implements OnInit {
 
    // this.route.params.subscribe((params:Params)=>this.unitId=params['id']);   // 参数订阅
   }
+
+  addComment() {
+      let comment=new Comment(0,this.product.id,new Date().toISOString(),'someone',this.newRating,this.newComment);
+      this.comments.unshift(comment);
+      let sum:number=this.comments.reduce((sum,comment)=>sum+comment.rating,0 );// 修改tslint.json，把no-shadowed-variable的值从true改成false
+      this.product.rating=sum/this.comments.length;
+
+      // 发表评论后初始化评论
+      this.newComment=null;
+      this.newRating=5;
+      this.isCommentHide=true;
+
+  }
+
 
 }

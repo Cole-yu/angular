@@ -1,4 +1,8 @@
 <div class="productDetail">
+  <div>
+    <img src="http://placehold.it/1100x120">
+  </div>
+  <br>
   <p>
     产品详情
   </p>
@@ -11,9 +15,21 @@
   </p>
   <div>
     <p class="pull-right">{{comments.length}}</p>
-    <p><app-stars [rating]="product.rating"></app-stars></p>
+    <p><app-stars [rating]="product.rating|number:'1.0-2'"></app-stars></p>
   </div>
+  <hr>
   <div>
+    <div>
+      <button class="btn btn-success" (click)="isCommentHide=!isCommentHide">发表评论</button>
+    </div>
+    <div [hidden]="isCommentHide">
+      <div><app-stars [(rating)]="newRating" [readonly]="false"></app-stars></div>
+      <div>
+        <textarea name="" id="" cols="30" rows="3" [(ngModel)]="newComment"></textarea>
+      </div>
+      <button class="btn btn-default" (click)="addComment()">提交</button>
+    </div>
+
     <div class="row" *ngFor="let comment of comments">
       <hr>
       <div class="col-md-12">

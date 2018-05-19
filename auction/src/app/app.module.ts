@@ -30,6 +30,7 @@ import { FilterPipe } from './pipe/filter.pipe';
 import { OutputComponent } from './contact-us/output/output.component';
 import { OrderComponent } from './contact-us/order/order.component';
 import { LifeComponent } from './company-news/life/life.component';
+import { ChildComponent } from './company-news/child/child.component';
 
 
 @NgModule({
@@ -59,7 +60,8 @@ import { LifeComponent } from './company-news/life/life.component';
     OutputComponent,
     OrderComponent,
     MultiplePipe,
-    LifeComponent,
+    ChildComponent,
+    LifeComponent
   ],
   imports: [
     BrowserModule,

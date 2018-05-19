@@ -2,4 +2,18 @@
   <div>这里整个区域是父组件</div>
   <hr>
   <app-life [name]="title"></app-life>
+  <hr>
+  <span>问候语:</span><input type="text" placeholder="请输入问候语" [(ngModel)]="greeting">
+  <span>姓名：</span><input type="text" [(ngModel)]="user.name">
+  <app-child [greeting]="greeting" [user]="user" #child>
+    <div class="header">这是页头，这个div是从父组件中投影过来的,title是{{title}}</div>
+    <div class="footer">这是页脚，这个div是从父组件中投影过来的.</div>
+  </app-child>
+  <hr>foot
+  <button type="submit" class="btn btn-default" (click)="child.say('Jerry')">问候</button>
+  <div>
+    消息:{{message}}
+  </div>
+  <hr>
+  <div [innerHTML]="divContent"></div>
 </div>
