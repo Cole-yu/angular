@@ -23,9 +23,11 @@ export class WebMapComponent implements OnInit {
         from:[''],
         to:['']
       }),
-      phone:fb.group({
-        mobilePhone:['18817934440',mobileValidator,mobileAsyncValidator]
-      }),
+      // phone:fb.group({
+      //   mobilePhone:['18817934440',mobileValidator,mobileAsyncValidator]
+      // }),
+      // formGroupName="phone"
+      mobilePhone:['',mobileValidator,mobileAsyncValidator],
       emails:fb.array([
         'a@a.com','b@b.com'
       ]),

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-registration',
@@ -7,13 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegistrationComponent implements OnInit {
 
+  mobileValid:boolean=true;
+  mobileUntouched:boolean=true;
+
   constructor() { }
 
   ngOnInit() {
   }
 
-  onSubmit(value:any) {
+  onSubmit(value:any,valid:boolean) {
+    console.log(valid);
     console.log(value);
   }
 
+  OnMobileInput(form:NgForm) {
+    if(form) {
+      this.mobileValid=form.form.get('username').valid;
+      this.mobileUntouched=form.form.get('username').untouched;
+    }
+  }
 }

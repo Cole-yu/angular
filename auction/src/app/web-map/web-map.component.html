@@ -4,23 +4,31 @@
 <form [formGroup]="formModal" (submit)="onSubmit()">
   <div class="form-group">
     用户名:
-    <input type="text" class="form-control" formControlName="username" placeholder="请输入用户名">
+    <input type="text" [class.has-error]="formModal.get('username').invalid&&formModal.get('username').touched" class="form-control" formControlName="username" placeholder="请输入用户名">
   </div>
-  <div [hidden]="!formModal.hasError('required','username')" class="error-tips">
-    用户名是必填项
-  </div>
-  <div [hidden]="!formModal.hasError('minlength','username')" class="error-tips">
-    用户名的最小长度为6
+  <div [hidden]="formModal.get('username').valid||formModal.get('username').untouched">
+    <div [hidden]="!formModal.hasError('required','username')" class="error-tips">
+      用户名是必填项
+    </div>
+    <div [hidden]="!formModal.hasError('minlength','username')" class="error-tips">
+      用户名的最小长度为6
+    </div>
   </div>
   <div formGroupName="dateRange">
     起始日期: <input type="date" class="form-control" formControlName="from">
     结束日期： <input type="date" class="form-control" formControlName="to">
   </div>
   <hr>
-  <div class="form-group" formGroupName="phone">
+  <div class="form-group">
     手机号:
     <input type="text" class="form-control" formControlName="mobilePhone">
   </div>
+  <div [hidden]="formModal.get('mobilePhone').valid||formModal.get('mobilePhone').pristine">
+    <div [hidden]="!formModal.hasError('mobile','mobilePhone')" class="error-tips">
+      请输入正确的手机号码
+    </div>
+  </div>
+  <div [hidden]="!formModal.get('mobilePhone').pending" class="error-tips">正在校验手机的合法性</div>
   <hr>
   <div>
     <ul formArrayName="emails">

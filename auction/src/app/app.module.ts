@@ -31,6 +31,8 @@ import { OutputComponent } from './contact-us/output/output.component';
 import { OrderComponent } from './contact-us/order/order.component';
 import { LifeComponent } from './company-news/life/life.component';
 import { ChildComponent } from './company-news/child/child.component';
+import { MobileValidatorDirective } from './directives/mobile-validator.directive';
+import { EqualValidatorDirective } from './directives/equal-validator.directive';
 
 
 @NgModule({
@@ -61,6 +63,8 @@ import { ChildComponent } from './company-news/child/child.component';
     OrderComponent,
     MultiplePipe,
     ChildComponent,
+    MobileValidatorDirective,
+    EqualValidatorDirective ,
     LifeComponent
   ],
   imports: [

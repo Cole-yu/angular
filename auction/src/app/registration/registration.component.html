@@ -1,17 +1,28 @@
 <!--模板式表单实现信息注册-->
 <div class="regist">
-  <form  #regist="ngForm" role="form" class="form-horizontal" (ngSubmit)="onSubmit(regist.value)">
+  <form  #regist="ngForm" role="form" class="form-horizontal" (ngSubmit)="onSubmit(regist.value,regist.valid)" novalidate>
     <div class="form-group">
       <label for="username" class="control-label col-sm-2">用户名:</label>
       <div class="col-sm-10">
-        <input type="text" ngModel name="username" id="username" class="form-control" placeholder="请输入用户名">
+        <input type="text" ngModel required minlength="6" name="username" id="username" class="form-control" (input)="OnMobileInput(regist)" placeholder="请输入用户名">
+      </div>
+    </div>
+    <div [hidden]="mobileUntouched||mobileValid">
+      <div [hidden]="!regist.form.hasError('required','username')" class="error-tips">
+        用户名是必填项
+      </div>
+      <div [hidden]="!regist.form.hasError('minlength','username')" class="error-tips">
+        用户名的最小长度为6
       </div>
     </div>
     <div class="form-group">
       <label for="telephone" class="control-label col-sm-2">手机号:</label>
       <div class="col-sm-10">
-        <input type="text" id="telephone" ngModel name="telephone" class="form-control" placeholder="请输入手机号">
+        <input type="text" id="telephone" ngModel appMobile name="telephone" class="form-control" placeholder="请输入手机号">
       </div>
+    </div>
+    <div [hidden]="!regist.form.hasError('mobile','telephone')" class="error-tips">
+      请输入正确的手机号码
     </div>
     <div class="form-group">
       <label for="e-mail" class="control-label col-sm-2">邮箱:</label>
@@ -23,8 +34,14 @@
       <div class="form-group">
         <label for="password" class="control-label col-sm-2">密码:</label>
         <div class="col-sm-10">
-          <input type="password" id="password" ngModel name="password" class="form-control" placeholder="请输入密码">
+          <input type="password" id="password" ngModel minlength="6" name="password" class="form-control" placeholder="请输入密码">
         </div>
+      </div>
+      <div [hidden]="!regist.form.hasError('required',['passwordGroup','password'])" class="error-tips">
+        密码是必填项
+      </div>
+      <div [hidden]="!regist.form.hasError('minlength',['passwordGroup','password'])" class="error-tips">
+        密码的最小长度为6
       </div>
       <div class="form-group">
         <label for="repeatPassword" class="control-label col-sm-2">确认密码:</label>
