@@ -33,6 +33,10 @@ import { LifeComponent } from './company-news/life/life.component';
 import { ChildComponent } from './company-news/child/child.component';
 import { MobileValidatorDirective } from './directives/mobile-validator.directive';
 import { EqualValidatorDirective } from './directives/equal-validator.directive';
+import { GoodsComponent } from './about-us/goods/goods.component';
+import {HttpClientModule} from '@angular/common/http';
+import { WebSocketComponent } from './about-us/web-socket/web-socket.component';
+import {WebSocketService} from './share/web-socket.service';
 
 
 @NgModule({
@@ -65,15 +69,18 @@ import { EqualValidatorDirective } from './directives/equal-validator.directive'
     ChildComponent,
     MobileValidatorDirective,
     EqualValidatorDirective ,
+    GoodsComponent,
+    WebSocketComponent,
     LifeComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [AuthGuard,UnsavedGuard,ProductService],// 提供器：服务和模块
+  providers: [AuthGuard,UnsavedGuard,ProductService,WebSocketService],// 提供器：服务和模块
   bootstrap: [AppComponent]
 })
 export class AppModule { }
