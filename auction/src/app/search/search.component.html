@@ -1,5 +1,5 @@
 <!--响应式表单-->
-<form name="searchForm" role="form" [formGroup]="formModal" (ngSubmit)="Onsearch()" novalidate>
+<form name="searchForm" role="form" [formGroup]="formModal" (ngSubmit)="onSearch()" novalidate>
   <div class="form-group" [class.has-error]="formModal.hasError('minlength','title')">
     <label for="productTittle">商品名称</label>
     <input type="text" formControlName="title" id="productTittle" placeholder="商品名称" class="form-control">

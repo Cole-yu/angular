@@ -25,8 +25,17 @@ export class UnitComponent implements OnInit {
   private unitId:number;
   ngOnInit() {
     this.unitId=this.routerInfo.snapshot.params['id'];
-    this.product=this.productService.getProduct(this.unitId);
-    this.comments=this.productService.getCommentForProduct(this.unitId);
+    // this.product=this.productService.getProduct(this.unitId);
+    // this.comments=this.productService.getCommentForProduct(this.unitId);
+
+    this.productService.getProduct(this.unitId).subscribe(
+      unit=>this.product=unit
+    );
+
+    this.productService.getCommentForProduct(this.unitId).subscribe(
+      comments=>this.comments=comments
+    );
+
 
    // this.route.params.subscribe((params:Params)=>this.unitId=params['id']);   // 参数订阅
   }

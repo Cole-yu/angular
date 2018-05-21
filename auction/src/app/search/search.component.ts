@@ -4,6 +4,7 @@ import 'rxjs/add/operator/debounceTime';
 import {promise} from 'selenium-webdriver';
 import controlFlow = promise.controlFlow;
 import {ProductService} from '../share/product.service';
+import {HttpClient} from '@angular/common/http';
 // import 'rxjs/Rx'; 在黑白单中，不能这样导入，应该导入需要使用的 子模块，例如debounceTime子模块
 // 在tslint.json中，导入黑名单 import-blacklist；rxjs和rxjs/Rx被列入黑名单
 
@@ -20,7 +21,7 @@ export class SearchComponent implements OnInit {
 
   categories:string[];
 
-  constructor(private  productService:ProductService) {
+  constructor(private  productService:ProductService,private http:HttpClient) {
     // [formControl]="searchInput"
     // this.searchInput.valueChanges
     //   .debounceTime(500)// 延迟500毫秒发射事件
@@ -38,9 +39,10 @@ export class SearchComponent implements OnInit {
     this.categories=this.productService.getAllCategories();
   }
 
-  Onsearch() {
+  onSearch() {
       if(this.formModal.valid) {
         console.log(this.formModal.value);
+        this.productService.searchEvent.emit(this.formModal.value);// 发射查询事件
       }
   }
 

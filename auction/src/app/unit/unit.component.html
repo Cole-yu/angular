@@ -1,3 +1,6 @@
+<!--在Oninit中通过Http服务发起异步请求，在Oninit执行完后，渲染模板。但因为是异步执行的，此时products数据可能为空，导致无法渲染，控制台出错-->
+<!--可以通过在product后面加一个？,表示在product有值时进行访问渲染-->
+
 <div class="productDetail">
   <div>
     <img src="http://placehold.it/1100x120">
@@ -8,14 +11,14 @@
   </p>
   <p>
     产品名称
-    {{product.title}}
+    {{product?.title}}
   </p>
   <p>
-    价格：{{product.price}}元
+    价格：{{product?.price}}元
   </p>
   <div>
-    <p class="pull-right">{{comments.length}}</p>
-    <p><app-stars [rating]="product.rating|number:'1.0-2'"></app-stars></p>
+    <p class="pull-right">{{comments?.length}}</p>
+    <p><app-stars [rating]="product?.rating|number:'1.0-2'"></app-stars></p>
   </div>
   <hr>
   <div>
