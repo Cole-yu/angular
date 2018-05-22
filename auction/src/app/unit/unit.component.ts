@@ -1,6 +1,8 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap, Params} from '@angular/router';
-import {Comment, Product, ProductService} from '../share/product.service';   // 路由功能
+import {Comment, Product, ProductService} from '../share/product.service';
+import {WebSocketService} from '../share/web-socket.service';
+import {Subscription} from 'rxjs';   // 路由功能
 
 @Component({
   selector: 'app-unit',
@@ -18,7 +20,13 @@ export class UnitComponent implements OnInit {
 
   isCommentHide:boolean=true;
 
-  constructor(private routerInfo: ActivatedRoute,private router: Router,private productService:ProductService) {
+  isWatched:boolean=false;
+  currentBid:number;// 当前的最新出价
+
+  subscription:Subscription;
+
+  constructor(private routerInfo: ActivatedRoute,private router: Router,
+              private productService:ProductService,private wsService:WebSocketService) {
 
   }
 
@@ -29,7 +37,10 @@ export class UnitComponent implements OnInit {
     // this.comments=this.productService.getCommentForProduct(this.unitId);
 
     this.productService.getProduct(this.unitId).subscribe(
-      unit=>this.product=unit
+      unit=> {
+        this.product=unit;
+        this.currentBid=this.product.price;
+      }
     );
 
     this.productService.getCommentForProduct(this.unitId).subscribe(
@@ -50,7 +61,29 @@ export class UnitComponent implements OnInit {
       this.newComment=null;
       this.newRating=5;
       this.isCommentHide=true;
+  }
 
+  // 关注与取消关注的切换操作
+  watchProduct() {
+    // this.isWatched=!this.isWatched;
+    if(this.subscription) {// 如果流已经存在，关闭流
+      this.subscription.unsubscribe();
+      this.isWatched=false;
+      this.subscription=null;
+    }else {// 流不存在时，则创建WebSocket流
+      this.isWatched=true;
+      this.subscription=this.wsService.createObservableSocket('ws://localhost:8085',this.product.id)
+        .subscribe(
+          products=> {
+            console.log(products);// todo undefined,从WebSocketService中订阅返回的数据为空
+
+            let product=products.find(p=>p.productId==this.product.id);
+            this.currentBid=product.bid;
+
+            // this.currentBid=222;
+          }
+        );
+    }
   }
 
 

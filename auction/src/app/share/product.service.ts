@@ -7,6 +7,14 @@ export class ProductService {
 
   searchEvent:EventEmitter<ProductSearchParams>=new EventEmitter();// 数据类型是ProductSearchParams,事件名称是searchEvent,定义一个流，中间人
 
+  // 方法一:参数写死在服务上，测试是否能发送数据
+  // private data:any={
+  //   'title':'第二个',
+  //   'price':3,
+  //   'category':'-1'
+  // };
+  // private params=new HttpParams({fromObject:this.data});
+
   // private products:Product[]=[
   //   new Product(1,'第一个商品',1.99,3.5,'这是第一个商品，慕课网实例angular',['电子产品','硬件设备']),
   //   new Product(2,'第二个商品',2.99,2.5,'这是第二个商品，慕课网实例angular',['图书']),
@@ -25,9 +33,6 @@ export class ProductService {
   //   new Comment(5,3,'2018-05-15 20:54:38','周七',5,'东西真的不错'),
   //   new Comment(6,2,'2018-05-15 20:54:38','喻八',3,'东西还可以'),
   // ];
-
-  // public params:HttpParams;
-
 
   constructor(private http:HttpClient) {
   }
@@ -61,11 +66,15 @@ export class ProductService {
 
   // 教学视频中使用的是http模块，此模块已被废弃，要使用HttpClient模块，因此URLSearchParams也要改成HttpParams,
   search(params:ProductSearchParams):Observable<any> {
-    // return this.http.get('/api/products',{params:this.encodeParams(params)});
+    // 方法一:参数发送测试使用
+    // return this.http.get('/api/products',{params:this.params});
+
     return this.http.get('/api/products',{params:this.encodeParams(params)});
   }
 
   private encodeParams(params:any) {
+
+    // 方法二:使用Http对象,而不是HttpClient对象,创建URLSearchParams对象，可以使用reduce一个个添加参数
     // let result:URLSearchParams;
     // result=Object.keys(params)
     //   .filter(key=>params[key])
@@ -75,21 +84,47 @@ export class ProductService {
     //   },new URLSearchParams());
     // return result;
 
-
+    // 方法三：换种方式把参数写死在服务上，测试HttpParams对象是否只能进行链式调用
     // 成功添加参数字段
-    // const pp=new HttpParams()
-    //     .append('name','yfx')
-    //     .append('age','37');
-    // return pp;
+    // return new HttpParams()
+    //         .append('name','yfx')
+    //         .append('age','37');
 
 
-     return Object.keys(params)     // this.formModal.value
+     // 无法使用reduce方法，因为HttpParams必须链式调用
+     /*return Object.keys(params)     // this.formModal.value
       .filter(key=>params[key])// 筛选出有值的参数
       .reduce((sum:HttpParams,key:string)=> {
         // sum.append(key,params[key])
            sum.set(key,params[key]);
         return sum;
-      },new HttpParams());
+      },new HttpParams());*/
+
+
+     // 方法四:params为查询按钮点击时传入的this.formModal.value,包含title,price,category,参考ProductSearchParams类
+     // HttpParams无法使用循环遍历，因为必须直接在创建对象后调用.set方法进行链式操作。new HttpParams.set().set().set(),
+     if(params['title']&&params['price']) {// title与price的值均存在
+        return  new HttpParams()
+                    .set('title',params['title'])
+                    .set('price',params['price'])
+                    .set('category',params['category']);
+     }
+    if(params['title']&&!params['price']) {// title存在，price不存在
+      return new HttpParams()
+                .set('title',params['title'])
+                .set('category',params['category']);
+
+    }
+    if(!params['title']&&params['price']) {// title不存在，price存在
+       return new HttpParams()
+                .set('price',params['price'])
+                .set('category',params['category']);
+
+    }
+    if(!params['title']&&!params['price']) {
+      return new HttpParams()
+                .set('category',params['category']);
+    }
   }
 }
 

@@ -13,7 +13,7 @@ export class WebSocketComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.wsService.createObserobleSocket('ws://localhost:8085')
+    this.wsService.createObservableSocket('ws://localhost:8085',3)
       .subscribe(
         data=>console.log(data),
         err=>console.log(err),

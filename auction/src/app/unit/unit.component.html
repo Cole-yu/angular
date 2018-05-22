@@ -1,4 +1,5 @@
-<!--在Oninit中通过Http服务发起异步请求，在Oninit执行完后，渲染模板。但因为是异步执行的，此时products数据可能为空，导致无法渲染，控制台出错-->
+<!--商品详情组件，教学视频中的product-detail-->
+<!--在OnInit中通过Http服务发起异步请求，在OnInit执行完后，渲染模板。但因为是异步执行的，此时products数据可能为空，导致无法渲染，控制台出错-->
 <!--可以通过在product后面加一个？,表示在product有值时进行访问渲染-->
 
 <div class="productDetail">
@@ -19,6 +20,11 @@
   <div>
     <p class="pull-right">{{comments?.length}}</p>
     <p><app-stars [rating]="product?.rating|number:'1.0-2'"></app-stars></p>
+  </div>
+  <hr>
+  <div class="thumbnail">
+    <button class="btn btn-default btn-lg" [class.active]="isWatched" (click)="watchProduct()">{{isWatched?'取消关注':'关注'}}</button>
+    <label >当前最新出价:{{currentBid|number:'.2-2'}}</label>
   </div>
   <hr>
   <div>

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class WebSocketService {
@@ -8,19 +9,26 @@ export class WebSocketService {
 
   constructor() { }
 
-  createObserobleSocket(url:string):Observable<any> {
+  // 创建一个可观测的WebSocket的流
+  createObservableSocket(url:string,id:number):Observable<any> {
     this.ws=new WebSocket(url);
-    return new Observable(
+    return new Observable<string>(
       observer=> {
         this.ws.onmessage=(event)=>observer.next(event.data);
         this.ws.onerror=(event)=>observer.error(event);
         this.ws.onclose=(event)=>observer.complete();
+        this.ws.onopen=(event)=>this.sendMessage({productId:id});// 连接打开时
+        return ()=>this.ws.close();// 回调函数，取消订阅的时候会关闭流，防止内存泄露
       }
-    );
+    ).map(message=> {
+      JSON.parse(message);
+      console.log(message);
+    });
   }
 
-  sendMessage(message:string) {
-    this.ws.send(message);
+  // 向服务器发送消息
+  sendMessage(message:any) {
+    this.ws.send(JSON.stringify(message));
   }
 
 }
