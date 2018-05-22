@@ -37,6 +37,7 @@ import { GoodsComponent } from './about-us/goods/goods.component';
 import {HttpClientModule} from '@angular/common/http';
 import { WebSocketComponent } from './about-us/web-socket/web-socket.component';
 import {WebSocketService} from './share/web-socket.service';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 
 
 @NgModule({
@@ -80,7 +81,9 @@ import {WebSocketService} from './share/web-socket.service';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [AuthGuard,UnsavedGuard,ProductService,WebSocketService],// 提供器：服务和模块
+  providers: [AuthGuard,UnsavedGuard,ProductService,WebSocketService,
+    {provide:LocationStrategy,useClass:HashLocationStrategy}
+  ],// 提供器：服务和模块
   bootstrap: [AppComponent]
 })
 export class AppModule { }

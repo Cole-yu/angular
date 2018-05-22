@@ -74,14 +74,18 @@ export class UnitComponent implements OnInit {
       this.isWatched=true;
       this.subscription=this.wsService.createObservableSocket('ws://localhost:8085',this.product.id)
         .subscribe(
-          products=> {
-            console.log(products);// todo undefined,从WebSocketService中订阅返回的数据为空
-
-            let product=products.find(p=>p.productId==this.product.id);
-            this.currentBid=product.bid;
-
-            // this.currentBid=222;
+          data=> {
+             console.log('组件中打印出来的数据:'+data);
+             this.currentBid=520;
           }
+
+          // data是个Json格式，[{'ProductId':1,'bid':277.23}]// todo 服务中打印出来时存在数据，但是组件中结果为undefined
+          // products=> {
+          //   console.log(products);// todo undefined,从WebSocketService中订阅返回的数据为空
+          //
+          //   let product=products.find(p=>p.productId==this.product.id);
+          //   this.currentBid=product.bid;
+          // }
         );
     }
   }

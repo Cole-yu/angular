@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
-import 'rxjs/add/operator/map';
+// import 'rxjs/add/operator/map';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class WebSocketService {
@@ -22,7 +23,7 @@ export class WebSocketService {
       }
     ).map(message=> {
       JSON.parse(message);
-      console.log(message);
+      console.log('服务中打印出来的数据:'+message);
     });
   }
 
