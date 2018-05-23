@@ -21,6 +21,9 @@ export class SearchComponent implements OnInit {
 
   categories:string[];
 
+  public title:string[];
+  public price:string[];
+
   constructor(private  productService:ProductService,private http:HttpClient) {
     // [formControl]="searchInput"
     // this.searchInput.valueChanges

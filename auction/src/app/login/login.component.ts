@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as THREE from '../../assets/three.js'
-import {Observable} from 'rxjs';  // 在所需的组件中引入第三方模块
+import {Observable} from 'rxjs';
+import {environment} from '../../environments/environment';  // 在所需的组件中引入第三方模块
 
 @Component({
   selector: 'app-login',
@@ -13,6 +14,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('现在的环境是:'+environment.qrCode);
     // let particle_no = 25;
     //
     // let canvas = document.getElementsByTagName("canvas")[0];

@@ -7,10 +7,10 @@
     <input type="text" [class.has-error]="formModal.get('username').invalid&&formModal.get('username').touched" class="form-control" formControlName="username" placeholder="请输入用户名">
   </div>
   <div [hidden]="formModal.get('username').valid||formModal.get('username').untouched">
-    <div [hidden]="!formModal.hasError('required','username')" class="error-tips">
+    <div [hidden]="!formModal.hasError('required',['username'])" class="error-tips">
       用户名是必填项
     </div>
-    <div [hidden]="!formModal.hasError('minlength','username')" class="error-tips">
+    <div [hidden]="!formModal.hasError('minlength',['username'])" class="error-tips">
       用户名的最小长度为6
     </div>
   </div>
@@ -24,7 +24,7 @@
     <input type="text" class="form-control" formControlName="mobilePhone">
   </div>
   <div [hidden]="formModal.get('mobilePhone').valid||formModal.get('mobilePhone').pristine">
-    <div [hidden]="!formModal.hasError('mobile','mobilePhone')" class="error-tips">
+    <div [hidden]="!formModal.hasError('mobile',['mobilePhone'])" class="error-tips">
       请输入正确的手机号码
     </div>
   </div>
@@ -33,7 +33,7 @@
   <div>
     <ul formArrayName="emails">
       邮箱账号:
-      <li *ngFor="let e of this.formModal.get('emails').controls;let i=index" >
+      <li *ngFor="let e of DynamicFormControls.controls;let i=index" >
         <input type="text" class="form-control" [formControlName]="i">
       </li>
     </ul>
@@ -53,8 +53,8 @@
     <div class="form-group">
       确认密码: <input type="password" class="form-control" formControlName="repeatPassword">
     </div>
-    <div [hidden]="!formModal.hasError('equal','passwordGroup')" class="error-tips">
-      {{formModal.getError('equal','passwordGroup')?.desc}}
+    <div [hidden]="!formModal.hasError('equal',['passwordGroup'])" class="error-tips">
+      {{formModal.getError('equal',['passwordGroup'])?.desc}}
     </div>
   </div>
   <div>

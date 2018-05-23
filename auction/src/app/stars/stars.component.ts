@@ -10,12 +10,12 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 export class StarsComponent implements OnInit,OnChanges {
 
   @Input()
-  private  rating:number =0;
+  public  rating:number =0;
 
   @Output()
   private ratingChange:EventEmitter<Number>=new EventEmitter();// rating与ratingChange必须这样写，在父组件中才能使用[(ngModal)]双向绑定
 
-  private  stars:boolean[];
+  public stars:boolean[];
 
   @Input()
   private readonly:boolean=true;

@@ -1,16 +1,16 @@
 <!--响应式表单-->
 <form name="searchForm" role="form" [formGroup]="formModal" (ngSubmit)="onSearch()" novalidate>
-  <div class="form-group" [class.has-error]="formModal.hasError('minlength','title')">
+  <div class="form-group" [class.has-error]="formModal.hasError('minlength',['title'])">
     <label for="productTittle">商品名称</label>
     <input type="text" formControlName="title" id="productTittle" placeholder="商品名称" class="form-control">
-    <span class="help-block" [class.hidden]="!formModal.hasError('minlength','title')">
+    <span class="help-block" [class.hidden]="!formModal.hasError('minlength',['title'])">
       请至少输入三个字符
     </span>
   </div>
-  <div class="form-group" [class.has-error]="formModal.hasError('positiveNumber','price')">
+  <div class="form-group" [class.has-error]="formModal.hasError('positiveNumber',['price'])">
     <label for="product">商品价格</label>
     <input type="number" formControlName="price" id="product" placeholder="商品价格" class="form-control">
-    <span class="help-block" [class.hidden]="!formModal.hasError('positiveNumber','price')">
+    <span class="help-block" [class.hidden]="!formModal.hasError('positiveNumber',['price'])">
       请输入正数
     </span>
   </div>

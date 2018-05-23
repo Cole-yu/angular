@@ -12,7 +12,7 @@ import {Observable} from 'rxjs';
 export class ProductComponent implements OnInit {
   private  imgUrl='http://placehold.it/360x150';
   // private products:Product[];
-  private products:Observable<Product[]>;
+  public products:Observable<Product[]>;
 
   // private keyword:string;
   // private titleFilter:FormControl=new FormControl();

@@ -58,6 +58,11 @@ export class WebMapComponent implements OnInit {
 
   }
 
+  get DynamicFormControls() {
+    return <FormArray>this.formModal.get('emails');
+    // this.formModal.get('emails').controls
+  }
+
   onSubmit() {
     const isValid:boolean=this.formModal.get('username').valid;
     console.log('username的表单校验结果:'+isValid);
