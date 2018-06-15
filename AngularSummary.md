@@ -96,5 +96,6 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
     ButtonsModule.forRoot()
   ]
 ```
-官网链接：[bootstarap]
-[bootstarap]:https://valor-software.com/ngx-bootstrap/#/getting-started
+[bootstrap]:https://valor-software.com/ngx-bootstrap/#/getting-started
+官网链接：![bootstrap]
+
