@@ -1,5 +1,8 @@
 # Angular使用总结
 
+
+### webstorm中可以使用alt+enter组合键快速引入需要声明的模块
+
 ### AngularJS与Angular的差异比较
 *	性能:双向绑定，脏值检测与单向绑定
 *	路由：
@@ -89,21 +92,6 @@
 	npm install @types/jquery --save-dev
 	npm install @types/bootstrap --save-dev
 
-### 属性绑定
-
-
-### 声明一个数组的数据类型
-	public stars:boolean[]  			//stars是一个布尔类型的数组
-	public products:product[]   		//products是一个product类型的数组
-	private products:Array<product>     //等价于private products:product[]
-	public foo:Array<any>				//任意类型的数组，public foo:any[]
-	let bar:Array<AnyObject> = []
-
-
-
-### 父组件调用子组件的方法:
-	<app-alert #child></app-alert>
-	<div class="btn btn-default" (click)="child.fnAlert(txt)"></div>
 
 ### 修改angualr项目的端口号
 修改配置文件node_modules/angular-cli/lib/config/schema.json 
@@ -199,10 +187,88 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 [bootstrap]: https://valor-software.com/ngx-bootstrap/#/getting-started "官网链接"
 官网链接：[bootstrap]
 
+### 声明一个数组的数据类型
+	public stars:boolean[]  			//stars是一个布尔类型的数组
+	public products:product[]   		//products是一个product类型的数组
+	private products:Array<product>     //等价于private products:product[]
+	public foo:Array<any>				//任意类型的数组，public foo:any[]
+	let bar:Array<AnyObject> = []
+
+
 ### 路由
+* 	基本概念
+```
+	| 名称 | 简介 |
+	|:------:|:--------------------------------------------------------------:|
+	| Routes | 路由配置表,保存所有URL对应的展示组件单元，及在哪个RouterOutlet中展示 |
+	| RouterOutlet | HTML模板中内容的占位符标记<router-outlet></router-outlet> |
+	| Router | 运行时执行的路由对象(在控制器中使用)，调用router.navigate(['./product'])，router.navigateByUrl()指定导航到某个路由 |
+	| RouterLink | HTML模板中使用的路由导航指令 |
+	| ActivatedRoute | 激活的路由对象，保存着当前路由的信息，路由地址、路由参数等;在控制器中实例化一个路由对象，从路由对象中获取指定信息 |
+```
+```
+	const route:Routes=[
+		{path:"",component:productComponent}
+	]
+```
+```
+	routerLink的值是一个数组，可用来传递参数
+	<a [routerLink]="['/']"></a> 		 /表示匹配此路由下的根路由路径
+	<a [routerLink]="['/product']" [queryParams]="{id:1}"></a>  /表示匹配此路由的根路由"product"
+	<a [routerLink]="['./product',1]"></a> /表示当前路由下的子路由"product"
+```
+*	重定向路由	{path:'',redirectTo:'/home',pathMatch:'full'}
+*	子路由     
+	```
+	{path:'',component:'',children:[
+		{path:'',component:}
+	]
+	```
+*	辅助路由
+	```
+	<router-outlet></router-outlet>
+	<router-outlet name='aux'></router-outlet>	
+	------------------------------------------------------
+	{path:'home',component:'HomeComponent'} 				//显示在主路由中
+	{path:'chat',component:'ChatComponent',outlets:'aux'}   // chat路径显示在aux的辅助插座中
+	-------------------------------------------------------
+	<a [routerLink]="['/home',{outlets:{aux:'xxx'}}]"></a>  				//主插座显示home路径的组件，辅助插座下显示xxx路径的组件
+	<a [routerLink]="[{outlets:{primary:'home',aux:'chat'}}]">开始聊天</a>   //该辅助路由被激活显示时，主路由必须导航到home路径
+	<a [routerLink]="[{outlets:{aux:'chat'}}]">开始聊天</a>				    //辅助路由显示chat路径{path:'chat',component:'ChatComponent'}
+	<a [routerLink]="[{outlets:{aux:null}}]">结束聊天</a>				    //辅助路由为空，不显示任何组件
+	```
+* 	路由守卫
+	CanActivate,CanDeactivate本质上均为接口,需要定义类来实现这些接口(某个类实现接口，必须编写该接口拥有的所有方法)
+1.  CanActivate[处理导航到某路由的情况]
+
+2.  CanDeactivate[处理离开当前路由的情况]
+
+3.  Resolve[在路由激活之前获取路由数据]
+
+
+
+#### 在路由时传递数据的方式
+1.	在查询参数中传递数据
+	/product?id=1&name=yfx   =>  ActivatedRoute.queryParams[id]，从查询参数中获取数据
+2.  在路由路径中传递数据
+	{path:/product/:id}   => /product/1     =>  ActivatedRoute.Params[id],从url中获取数据
+3.  在路由配置中传递数据
+	{path:/product,component:ProductComponent,data:[{isProd:true}]}    => ActivatedRoute.data[0][isProd]
+
+####  参数快照与参数订阅(观察者模式)
+	参数快照：this.productId=this.routeInfo.snapshot.params["id"];	//创建一次，保证不会自身组件路由到自身组件
+	参数订阅：this.routeInfo.params.subscribe((params:Params)=>this.productId=params["id"]);  //订阅,监听事件
 
 
 ### 依赖注入
+
+
+### 属性绑定
+
+
+### 父组件调用子组件的方法:使用模板引用变量
+	<app-alert #child></app-alert>
+	<div class="btn btn-default" (click)="child.fnAlert(txt)"></div>
 
 
 ### 组件间通讯
