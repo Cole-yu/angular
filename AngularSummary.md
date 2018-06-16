@@ -198,7 +198,8 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 
 ### 路由
 * 	基本概念
-| 名称 | 简介 |
+
+| 名称  | 简介 |
 |:----:|:----:|
 |Routes|路由配置表,保存所有URL对应的展示组件单元，及在哪个RouterOutlet中展示|
 |RouterOutlet|HTML模板中内容的占位符标记<router-outlet></router-outlet>|
