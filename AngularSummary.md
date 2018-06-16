@@ -198,8 +198,8 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 
 ### 路由
 * 	基本概念
-	| 名称 | 简介 |
-	|:------:|:--------------------------------------------------------------:|
+	| 名称    | 简介                                                           |
+	| ------ | --------------------------------------------------------------- |
 	| Routes | 路由配置表,保存所有URL对应的展示组件单元，及在哪个RouterOutlet中展示 |
 	| RouterOutlet | HTML模板中内容的占位符标记<router-outlet></router-outlet> |
 	| Router | 运行时执行的路由对象(在控制器中使用)，调用router.navigate(['./product'])，router.navigateByUrl()指定导航到某个路由 |
@@ -223,8 +223,7 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 		{path:'',component:}
 	]
 	```
-*	辅助路由
-	```
+*	辅助路由	
 	<router-outlet></router-outlet>
 	<router-outlet name='aux'></router-outlet>	
 	******
@@ -235,7 +234,7 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	<a [routerLink]="[{outlets:{primary:'home',aux:'chat'}}]">开始聊天</a>   //该辅助路由被激活显示时，主路由必须导航到home路径
 	<a [routerLink]="[{outlets:{aux:'chat'}}]">开始聊天</a>				    //辅助路由显示chat路径{path:'chat',component:'ChatComponent'}
 	<a [routerLink]="[{outlets:{aux:null}}]">结束聊天</a>				    //辅助路由为空，不显示任何组件
-	```
+
 * 	路由守卫
 	CanActivate,CanDeactivate,Resolve本质上均为接口,需要定义类来实现这些接口(某个类实现接口，必须编写该接口拥有的所有方法,然后再在模块中创建对象来使用，接口->类->实例)
 1.  CanActivate[处理导航到某路由的情况]
