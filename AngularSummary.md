@@ -233,12 +233,12 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	<router-outlet></router-outlet>
 	<router-outlet name='aux'></router-outlet>	
 ```
-	***
+***
 ```
 	{path:'home',component:'HomeComponent'} 				//显示在主路由中
 	{path:'chat',component:'ChatComponent',outlets:'aux'}   // chat路径显示在aux的辅助插座中
 ```
-	***
+***
 ```	
 	<a [routerLink]="['/home',{outlets:{aux:'xxx'}}]"></a>  				//主插座显示home路径的组件，辅助插座下显示xxx路径的组件
 	<a [routerLink]="[{outlets:{primary:'home',aux:'chat'}}]">开始聊天</a>   //该辅助路由被激活显示时，主路由必须导航到home路径
