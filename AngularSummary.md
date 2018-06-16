@@ -428,13 +428,19 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 
 ### 管道pipe
 *	自定义管道命令:ng g pipe multiple
+	
+	```
 	带有@Pipe({name:'multiple'})装饰器的Typescript类,这个类实现PipeTransform接口,该接口只有一个transform方法
+	```
+
+	```
 	transform(value:number,arg?:number){
 		if(!arg){
 			arg=1;
 		}
 		return value\*arg;
 	}
+	```
 *	async,异步流管道
 
 ### 父组件调用子组件的方法:使用*模板引用变量*
