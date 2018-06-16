@@ -63,10 +63,10 @@
 	declarations:[  //只能用来声明组件、指令、管道，不能包含服务
 		AppComponent
 	],
-	imports:[		//引入依赖模块
+	imports:[				//引入依赖模块
 		BrowserModule, 		//浏览器模块
 		FormsModule,		//处理表单模块
-		HttpModule			//HTTP模块
+		HttpModule//HTTP模块
 	],
 	providers:[				//声明模块中提供的服务
 	],
@@ -77,8 +77,7 @@
 ### 在项目中引入第三方依赖
 1.  npm install jquery --save
 	npm install bootstrap --save
-2.  修改angular.json文件内容
-	在projects字段下的
+2.  修改angular.json文件内容在projects字段下的
 	```
 	"styles":[
 		"node_modules/bootstrap/dist/css/bootstrap.css"
@@ -96,7 +95,7 @@
 ### 修改angualr项目的端口号
 修改配置文件node_modules/angular-cli/lib/config/schema.json 
 default值就是默认的端口:4200
-	```
+```
 	"serve": {  
 	    "description": "Properties to be passed to the serve command",  
 	    "type": "object",  
@@ -114,7 +113,8 @@ default值就是默认的端口:4200
 	    }  
 	  }  
 	}  
-	```	
+```	
+
 ###  angular6中使用scss来作为样式，
 *	创建项目时
 	`ng new new_project_name --style=scss`
@@ -165,7 +165,7 @@ default值就是默认的端口:4200
 "styles": [
   "styles.css",
   "../node_modules/bootstrap/dist/css/bootstrap.css"
-],
+]
 ```
 4. 根据官方文档中你需要使用什么样式就要在app.module.ts注入
 ```
@@ -188,16 +188,16 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 官网链接：[bootstrap]
 
 ### 声明一个数组的数据类型
+```
 	public stars:boolean[]  			//stars是一个布尔类型的数组
 	public products:product[]   		//products是一个product类型的数组
 	private products:Array<product>     //等价于private products:product[]
 	public foo:Array<any>				//任意类型的数组，public foo:any[]
 	let bar:Array<AnyObject> = []
-
+```
 
 ### 路由
 * 	基本概念
-```
 	| 名称 | 简介 |
 	|:------:|:--------------------------------------------------------------:|
 	| Routes | 路由配置表,保存所有URL对应的展示组件单元，及在哪个RouterOutlet中展示 |
@@ -205,7 +205,6 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	| Router | 运行时执行的路由对象(在控制器中使用)，调用router.navigate(['./product'])，router.navigateByUrl()指定导航到某个路由 |
 	| RouterLink | HTML模板中使用的路由导航指令 |
 	| ActivatedRoute | 激活的路由对象，保存着当前路由的信息，路由地址、路由参数等;在控制器中实例化一个路由对象，从路由对象中获取指定信息 |
-```
 ```
 	const route:Routes=[
 		{path:"",component:productComponent}
@@ -228,23 +227,47 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	```
 	<router-outlet></router-outlet>
 	<router-outlet name='aux'></router-outlet>	
-	------------------------------------------------------
+	******
 	{path:'home',component:'HomeComponent'} 				//显示在主路由中
 	{path:'chat',component:'ChatComponent',outlets:'aux'}   // chat路径显示在aux的辅助插座中
-	-------------------------------------------------------
+	******
 	<a [routerLink]="['/home',{outlets:{aux:'xxx'}}]"></a>  				//主插座显示home路径的组件，辅助插座下显示xxx路径的组件
 	<a [routerLink]="[{outlets:{primary:'home',aux:'chat'}}]">开始聊天</a>   //该辅助路由被激活显示时，主路由必须导航到home路径
 	<a [routerLink]="[{outlets:{aux:'chat'}}]">开始聊天</a>				    //辅助路由显示chat路径{path:'chat',component:'ChatComponent'}
 	<a [routerLink]="[{outlets:{aux:null}}]">结束聊天</a>				    //辅助路由为空，不显示任何组件
 	```
 * 	路由守卫
-	CanActivate,CanDeactivate本质上均为接口,需要定义类来实现这些接口(某个类实现接口，必须编写该接口拥有的所有方法)
+	CanActivate,CanDeactivate,Resolve本质上均为接口,需要定义类来实现这些接口(某个类实现接口，必须编写该接口拥有的所有方法,然后再在模块中创建对象来使用，接口->类->实例)
 1.  CanActivate[处理导航到某路由的情况]
 
 2.  CanDeactivate[处理离开当前路由的情况]
+```
+	CanDeactivate有一个泛型,指定需要保护的组件类型
+	示例中：ProductComponent为CanDeactivate需要保护的组件名称,UnsaveGuard保护ProductComponent组件
+	export class UnsaveGuard implements CanDeactivate<ProductComponent>{
+		canDeactivate(component:ProductComponent){
+			return window.confirm("您没有保存数据，是否确定离开？");	//return true;离开,return false;留在当前路由
+		}
+	}
+```
+3.  Resolve[在路由激活之前获取到全部所需的数据,携带完整数据进入路由中]
+```
+	在路由导航时，必须加载好Product组件所需要的全部数据后，才能进入到保护的组件中去
+	使用目的：路由导航显示某组件时会向服务器端获取数据，需要一定的时间。防止在没加载完数据之前就进入组件中，出现组件没数据问题。保证组件信息完整
+	export class ProductResolve implements Resolve<Product>{
+		resolve(route:ActivateRouterSnapshot,state:RouterStateSnapshot){
+			let productId:number = route.params['id'] 	//ActivatedRouteSnapshot.params['id']=this.ActivateRouter.snapshot.params['id']
+			return ProductId;
+		}		
+	}
 
-3.  Resolve[在路由激活之前获取路由数据]
-
+	{path:'product/:id',component:ProductComponent,children:[		
+		],
+		resolve:{
+			product:ProductResolve
+		}
+	}
+```
 
 
 #### 在路由时传递数据的方式
@@ -253,7 +276,7 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 2.  在路由路径中传递数据
 	{path:/product/:id}   => /product/1     =>  ActivatedRoute.Params[id],从url中获取数据
 3.  在路由配置中传递数据
-	{path:/product,component:ProductComponent,data:[{isProd:true}]}    => ActivatedRoute.data[0][isProd]
+	`{path:/product,component:ProductComponent,data:[{isProd:true}]}    => ActivatedRoute.data[0][isProd]`
 
 ####  参数快照与参数订阅(观察者模式)
 	参数快照：this.productId=this.routeInfo.snapshot.params["id"];	//创建一次，保证不会自身组件路由到自身组件
