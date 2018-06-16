@@ -187,7 +187,7 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 [bootstrap]: https://valor-software.com/ngx-bootstrap/#/getting-started "官网链接"
 官网链接：[bootstrap]
 
-### 声明一个数组的数据类型
+### 声明一个具有泛型的数组---*数据类型*
 ```
 	public stars:boolean[]  			//stars是一个布尔类型的数组
 	public products:product[]   		//products是一个product类型的数组
@@ -229,28 +229,28 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	```
 
 *	辅助路由
-```
+	```
 	<router-outlet></router-outlet>
 	<router-outlet name='aux'></router-outlet>	
-```
+	```
 ***
-```
+	```
 	{path:'home',component:'HomeComponent'} 				//显示在主路由中
 	{path:'chat',component:'ChatComponent',outlets:'aux'}   // chat路径显示在aux的辅助插座中
-```
+	```
 ***
-```	
+	```	
 	<a [routerLink]="['/home',{outlets:{aux:'xxx'}}]"></a>  				//主插座显示home路径的组件，辅助插座下显示xxx路径的组件
 	<a [routerLink]="[{outlets:{primary:'home',aux:'chat'}}]">开始聊天</a>   //该辅助路由被激活显示时，主路由必须导航到home路径
 	<a [routerLink]="[{outlets:{aux:'chat'}}]">开始聊天</a>				    //辅助路由显示chat路径{path:'chat',component:'ChatComponent'}
 	<a [routerLink]="[{outlets:{aux:null}}]">结束聊天</a>				    //辅助路由为空，不显示任何组件
-```
+	```
 * 	路由守卫
 	CanActivate,CanDeactivate,Resolve本质上均为接口,需要定义类来实现这些接口(某个类实现接口，必须编写该接口拥有的所有方法,然后再在模块中创建对象来使用，接口->类->实例)
 1.  CanActivate[处理导航到某路由的情况]
 
 2.  CanDeactivate[处理离开当前路由的情况]
-```
+	```
 	CanDeactivate有一个泛型,指定需要保护的组件类型
 	示例中：ProductComponent为CanDeactivate需要保护的组件名称,UnsaveGuard保护ProductComponent组件
 	export class UnsaveGuard implements CanDeactivate<ProductComponent>{
@@ -258,9 +258,9 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 			return window.confirm("您没有保存数据，是否确定离开？");	//return true;离开,return false;留在当前路由
 		}
 	}
-```
+	```
 3.  Resolve[在路由激活之前获取到全部所需的数据,携带完整数据进入路由中]
-```
+	```
 	在路由导航时，必须加载好Product组件所需要的全部数据后，才能进入到保护的组件中去
 	使用目的：路由导航显示某组件时会向服务器端获取数据，需要一定的时间。防止在没加载完数据之前就进入组件中，出现组件没数据问题。保证组件信息完整
 	export class ProductResolve implements Resolve<Product>{
@@ -269,23 +269,28 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 			return ProductId;
 		}		
 	}
-
 	{path:'product/:id',component:ProductComponent,children:[		
 		],
 		resolve:{
 			product:ProductResolve
 		}
 	}
-```
+	```
 
 
 #### 在路由时传递数据的方式
 1.	在查询参数中传递数据
-	/product?id=1&name=yfx   =>  ActivatedRoute.queryParams[id]，从查询参数中获取数据
+	```
+   /product?id=1&name=yfx   =>  ActivatedRoute.queryParams[id]，从查询参数中获取数据
+	```
 2.  在路由路径中传递数据
-	{path:/product/:id}   => /product/1     =>  ActivatedRoute.Params[id],从url中获取数据
+	```
+   {path:/product/:id}   => /product/1     =>  ActivatedRoute.Params[id],从url中获取数据
+	```
 3.  在路由配置中传递数据
-	`{path:/product,component:ProductComponent,data:[{isProd:true}]}    => ActivatedRoute.data[0][isProd]`
+	```   
+	{path:/product,component:ProductComponent,data:[{isProd:true}]}    => ActivatedRoute.data[0][isProd]
+	```
 
 ####  参数快照与参数订阅(观察者模式)
 	参数快照：this.productId=this.routeInfo.snapshot.params["id"];	//创建一次，保证不会自身组件路由到自身组件
@@ -293,12 +298,140 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 
 
 ### 依赖注入
+	控制反转，IOC容器（Inverse of Control）
+*	提供器(providers)：		//{provider:token,useClass:className}
+	```
+	providers:[ProductService]
+	providers:[{provide:ProductService,useClass:ProductService}]  
+	```
+*	注入器(@Injectable)	//只有装备了@Injectable()的服务,才能将其他服务注入到自身;@Component,@Pipe装饰器中已经包含@Injectable
+	```
+	constructor(private productService:ProductService){
+		...	
+	}
+	```
+等价于
+	```
+	constructor(private injector:Injector){
+		this.productService=injector.get(ProdcudtService);
+	}
+	```
+
+### 提供器的声明作用域
+1.	声明在组件装饰器中，其作用域只限于当前组件中:
+	```
+	@component({
+		selector: 'app-unit',
+		templateUrl: './unit.component.html',
+		styleUrls: ['./unit.component.css'],
+		providers:[{provider:ProductService,useClass:ProductService}]
+	})
+	```
+2.  声明在模块中，其作用范围为整个模块(推荐)
+	```
+	@NgModule({
+		declarations:[],
+		imports:[],
+		providers:[ProductService]
+	})
+	export class AppModule{	
+	}
+	```
+
+### 工厂函数提供器和值声明提供器
+	在工厂函数提供器中依赖了值声明提供器
+1.  函数方式实现工厂函数提供器
+	```
+	providers:[{
+		provider:ProductService,
+		useFactory:()=>{
+			let logger=new LoggerService;			
+			if(true){
+				return new ProductService(logger);
+			}
+			else{
+				return new AnotherProductService(logger);
+			}
+		}
+	},LoggerService]
+	```
+2.  依赖注入方式实现工厂函数提供器，该提供器依赖其他服务和一个值声明提供器
+	```
+	providers:[{
+		provider:ProductService,
+		useFactory:(logger:LoggerService,IS_DEV)=>{	//工厂函数提供器,该工厂函数需要传入的形式参数,依赖LoggerService
+			if(IS_DEV){
+				return new ProductService(logger);
+			}
+			else{
+				return new AnotherProductService(logger);
+			}
+		},
+		deps:[LoggerService,"IS_DEV_ENV"]    	//工厂函数传入的实参，即依赖服务
+	},LoggerService,{						 	//值声明提供器:可以传入一个值,也可以传入一个对象
+		provider:"IS_DEV_ENV",useValue:false 	//provicer:"APP_CONFIG",useValue:{isDev:false}
+	}]
+	```
+
+### 事件绑定
+	<input type="text" (input)="onInputEvent($event)" >
+
+### 属性绑定[]===插值表达式
+*	Dom属性（js，python操作的API接口）angular通过dom的数据绑定机制来更新页面内容
+---
+* 	Html属性(标记语言)
+1.  html属性绑定,前面添加*attr*    angular修改html的属性=>浏览器同步机制同步html元素与dom对象=>dom更新页面内容
+	```
+	<td [attr.colspan]="tablecolspan"></td>
+	```
+2.  css类绑定
+	```
+	<div [class]="someclass"></div>
+	<div [class.special]="boolean"></div>
+	<div [ngClass]="{aaa:true,bbb:false}"></div>		//<div [ngClass]='object'></div>   obeject={className:expression,className:expression}
+	```
+3.  样式绑定
+	```
+	<div [style.color]="isspecial?'red':'blue'"></div>
+	<div [style.font-size.em]="isDev?3:1"></div>
+	<div [ngStyle]="{'font-style':isspecial?'italic':'normal'}"></div>
+	```
+*	双向数据绑定	[(ngModal)]="",既可以输入修改又可以显示的元素
+
+###  响应式编程(Rxjs)
+*	观察者模式
+1.  可观察对象Observable
+	```
+	var btn=document.querySelector('.button');
+	Observable.fromEvent(btn,'click');//创建一个事件流,可以发射事件,抛出异常,通知结束
+	```
+2.  观察者Observer:
+	```
+	var subscription=Observable.from([1,2,3,4])
+	.filter((e)=>e%2==0)
+	.map(e=>e*e)
+	.subscribe(
+		>e=>console.log(e),			//观察者知道如何处理Observable发送的值
+		>err=>console.log(err),
+		>()=>console.log("流结束了")
+	);
+	```
+3.  订阅Subscription	,表示一个可观察对象Id，用于取消注册,订阅
+4.  操作符Operators:filter,map,from,debounceTime...
 
 
-### 属性绑定
+### 管道pipe
+*	自定义管道命令:ng g pipe multiple
+	带有@Pipe({name:'multiple'})装饰器的Typescript类,这个类实现PipeTransform接口,该接口只有一个transform方法
+	transform(value:number,arg?:number){
+		if(!arg){
+			arg=1;
+		}
+		return value\*arg;
+	}
+*	async,异步流管道
 
-
-### 父组件调用子组件的方法:使用模板引用变量
+### 父组件调用子组件的方法:使用*模板引用变量*
 	<app-alert #child></app-alert>
 	<div class="btn btn-default" (click)="child.fnAlert(txt)"></div>
 
