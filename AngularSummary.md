@@ -199,13 +199,14 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 ### 路由
 * 	基本概念
 
-	| 名称    | 简介                                                           |
-	| *** | *** |
-	| Routes | 路由配置表,保存所有URL对应的展示组件单元，及在哪个RouterOutlet中展示 |
-	| RouterOutlet | HTML模板中内容的占位符标记<router-outlet></router-outlet> |
-	| Router | 运行时执行的路由对象(在控制器中使用)，调用router.navigate(['./product'])，router.navigateByUrl()指定导航到某个路由 |
-	| RouterLink | HTML模板中使用的路由导航指令 |
-	| ActivatedRoute | 激活的路由对象，保存着当前路由的信息，路由地址、路由参数等;在控制器中实例化一个路由对象，从路由对象中获取指定信息 |
+| 名称    | 简介                                                           |
+| *** | *** |
+| Routes | 路由配置表,保存所有URL对应的展示组件单元，及在哪个RouterOutlet中展示 |
+| RouterOutlet | HTML模板中内容的占位符标记<router-outlet></router-outlet> |
+| Router | 运行时执行的路由对象(在控制器中使用)，调用router.navigate(['./product'])，router.navigateByUrl()指定导航到某个路由 |
+| RouterLink | HTML模板中使用的路由导航指令 |
+| ActivatedRoute | 激活的路由对象，保存着当前路由的信息，路由地址、路由参数等;在控制器中实例化一个路由对象，从路由对象中获取指定信息 |
+
 
 ```
 	const route:Routes=[
@@ -227,18 +228,18 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 		{path:'',component:}
 	]
 	```
-	
+
 *	辅助路由	
 ```
 	<router-outlet></router-outlet>
 	<router-outlet name='aux'></router-outlet>	
 ```
-	---
+***
 ```
 	{path:'home',component:'HomeComponent'} 				//显示在主路由中
 	{path:'chat',component:'ChatComponent',outlets:'aux'}   // chat路径显示在aux的辅助插座中
 ```
-	---
+***
 ```	
 	<a [routerLink]="['/home',{outlets:{aux:'xxx'}}]"></a>  				//主插座显示home路径的组件，辅助插座下显示xxx路径的组件
 	<a [routerLink]="[{outlets:{primary:'home',aux:'chat'}}]">开始聊天</a>   //该辅助路由被激活显示时，主路由必须导航到home路径
