@@ -282,19 +282,19 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 
 1.	在查询参数中传递数据
 
-```
-   /product?id=1&name=yfx   =>  ActivatedRoute.queryParams[id]，从查询参数中获取数据
-```
+	```
+    /product?id=1&name=yfx   =>  ActivatedRoute.queryParams[id]，从查询参数中获取数据
+	```
 
 2.  在路由路径中传递数据
-```
-   {path:/product/:id}   => /product/1     =>  ActivatedRoute.Params[id],从url中获取数据
-```
+	```
+    {path:/product/:id}   => /product/1     =>  ActivatedRoute.Params[id],从url中获取数据
+	```
 
 3.  在路由配置中传递数据
-```   
+	```
 	{path:/product,component:ProductComponent,data:[{isProd:true}]}    => ActivatedRoute.data[0][isProd]
-```
+	```
 
 ####  参数快照与参数订阅(观察者模式)
 	参数快照：this.productId=this.routeInfo.snapshot.params["id"];	//创建一次，保证不会自身组件路由到自身组件
@@ -302,7 +302,7 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 
 
 ### 依赖注入
-	控制反转，IOC容器（Inverse of Control）
+	控制反转，IOC容器（Inverse of Control）	
 *	提供器(providers)：		//{provider:token,useClass:className}
 	```
 	providers:[ProductService]
@@ -315,8 +315,8 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	}
 	```
 
-等价于
-
+	等价于
+	
 	```
 	constructor(private injector:Injector){
 		this.productService=injector.get(ProdcudtService);
