@@ -556,29 +556,37 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 *	响应式表单(ReactiveFormsModule模块)
 三个类名,在控制器中使用，用于实例化一个对象
 1.	FormControl类
+
 		```
 		username:FormControl=new FormControl("yfx");
 		```
+
 2.	FormGroup类
+
 		```
 		formModel:FormGroup=new FormGroup({
 			form:new FormControl,
 			to:new FormControl
 		});
 		```
+
 3.	FormArray类
+
 		```
 		emails:FormArray=new FormArray([
 			new FormControl("a@a.com"),
 			new FormControl("b@b.com"),
 		]);
 		```
+		
 ***
-| 类名 | 指令 |
+
+| 类名 | 指令 |   |
 |:---:|:---:|:---:|
 |FormGroup|formGroup|formGroupName|
 |FormControl|formControl|formControlName|
 |FormArrar|             |formArrayName|
+
 	```
 	formGroup,formGroupName,formControl,formControlName,formArrayName是在html模板中使用
 	formGroup,formControl则使用的是属性绑定语法
