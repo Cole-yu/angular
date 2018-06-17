@@ -443,10 +443,20 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	```
 *	async,异步流管道
 
-### 父组件调用子组件的方法:使用*模板引用变量*
-	<app-alert #child></app-alert>
-	<div class="btn btn-default" (click)="child.fnAlert(txt)"></div>
+### 向组件内传递参数
+*	路由中传递参数
+*	输入属性方式(具有父子关系,父组件传递参数给子组件,子组件中定义一个输入属性)
+	
 
+### 向组件外传递数据(输出属性)
+*  	输出属性方式(具有父子关系,在子组件内定义发射事件，在父组件内监听事件)
+	```
+	@Output()    //@Output("priceChange"),这样可以将事件名称从lastPrice修改为priceChange
+	lastPrice:EventEmit<PriceQuote>=new EventEmit();   PriceQuote向外发射事件的数据类型，lastPrice为事件名称,即输出属性
+	this.lastPrice.emit(priceQutoe);			//发射自定义事件到外部
+	<div  (lastPrice)="getPriceHandle($event)"></div>  //监听自定义的事件，执行相应的函数
+	当符合输入属性rating，输出属性是ratingChange这个规则时,可以使用自定义的双向数据绑定语法[(rating)]=newRatingValue;否则使用事件监听的语法,(eventName)="doChange($event)"
+	```
 
 ### 组件间通讯
 *	中间人模式
@@ -454,20 +464,149 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 *   输入属性(子组件有一个输入属性的变量，父组件在用组件时，传入输入属性)
 *	输出属性(共享属性)
 
-### 父组件传递参数给子组件(输入属性,路由中传递参数)
-### 子组件传递参数到父组件(输出属性)
+### 父组件调用子组件的方法:使用*模板引用变量*
+*	在父组件的模板中使用
+	```
+	<app-alert #child></app-alert>
+	<div class="btn btn-default" (click)="child.fnAlert(txt)"></div>
+	```
+*	在父组件的控制器中使用,需要依赖ViewChild装饰器
+	```
+	@ViewChild('child1')
+	child1:ChildComponent;
+	```
 
-
-### 父子组件通讯
-*	父组件使用子组件的方法
-*	子组件使用父组件的方法（输入输出属性）
 
 ### 生命周期钩子
+1.	constructor
+2.	ngOnChanges(知识点:可变对象与不可变对象)
+*	调用情况:
+	```
+	不可变属性发生改变且为输入属性 //str:string="foo";str="bar";字符串为不可变对象
+	```
+*	不会调用：
+	```
+	只有在输入属性发生改变时,才会被调用;可变属性发生改变时不会调用ngOnchanges,// user={name:"foo"};user.name="bar";//对象为可变对象
+	```
+3.  ngOnInit
+4.  ngDoCheck(变更检测机制,用zeno.js实现,每次都是从根组件开始检测;实现时必须谨慎,代码必须高效、轻量级,否则很耗性能)
+	两种策略(defalut策略和onPush策略)
+*	defalut策略：更新检测整个组件树
+*	onPush策略：只有输入属性发生变化时才会检测组件及其子组件
+***
+5.  ngAfterContentInit(投影内容渲染完成后)
+*	投影机制
+	```
+	在父组件模板中(在投影内容中可以使用插值表达式传父组件属性):
+	<app-child>
+		<div class="header">父组件中要向子组件投影的"页头"部分内容{{user.name}}</div>
+		<div class="footer">父组件中要向子组件投影的"页脚"部分内容{{user.age}}</div>
+	</app-child>	
+	在子组件模板中:
+	<div>
+		<ng-content select=".header"></ng-content>//在子组件中,显示父组件中的"页头"内容
+		<ng-content select=".footer"></ng-content>//在子组件中,显示父组件中的"页脚"内容	
+	</div>
+	```
+*	先进行父组件内容检测，再进行子组件的内容检测
+*	顺序:父组件的投影内容初始化完毕->父组件的投影内容变更检测完毕->子组件的投影内容初始化完毕->子组件的投影内容变更检测完毕->父组件的视图内容初始化完毕(ngAfterViewInit)
+6.  ngAfterContentChecked
+***
+7.  ngAfterViewInit(视图组装完毕后)
+*	只会被调用一次
+*	在视图初始化组装完毕后才执行ngAfterViewInit，此时视图已经组装完成
+*	在该ngAfterViewInit函数下，变更绑定的视图属性会报错(因为视图已经组装完成);解决方法:需要使用setTimeout函数,在下一个运行周期中执行
+*	先组装子视图，再组装父视图
+*	顺序：子组件的视图初始化完毕->子组件的视图变更检测完毕->父组件的视图初始化完毕->父组件的视图变更检测完毕
+8.  ngAfterViewChecked
+	组件的视图变更检测
+9.  ngOnDestroy(在路由导航离开时)
+	用来清除资源：如取消订阅，关闭计时器
+***	
+>	数组的reduce方法,接收一个匿名回调函数,[一个初始值]
+>	array.reduce((sum,comment)=>sum+comment.rating,0);
 
 
 ### 表单处理及校验
-*	模板式表单
-*	响应式表单
+*	普通html表单
+	```
+	<form action="/regist" method="post">		
+	</form>
+	```
+*	模板式表单(FormsModule模块)
+三个html模板指令:NgForm,NgModel,NgModelGroup
+1.	ngForm
+	```
+	angulr会接管任何带有NgForm标记的html元素，若不需要angualr接管form,可以在表单中加ngNoForm	
+	<form #myForm="ngForm" (ngSubmit)="onSubmit(myForm.value)">		
+	</form>	
+	ngForm会拦截标准的html表单提交事件,<button type="submit"></button>	
+	```
+2.	ngModel
+	```
+	添加了ngModel标记的元素,同时必须指定name属性    //<div>用户名:<input type="text" ngModel name="username"></div>
+	```
+3.	ngModelGroup
+	```
+	<div ngMoelGroup="passwordsGroup">
+		<div>密码:<input type="password" ngModel name="password"></div>
+		<div>确认密码:<input type="password" ngModel name="pconfirm"></div>
+	</div>
+	```
+*	响应式表单(ReactiveFormsModule模块)
+三个类名,在控制器中使用，用于实例化一个对象
+1.	FormControl类
+		```
+		username:FormControl=new FormControl("yfx");
+		```
+2.	FormGroup类
+		```
+		formModel:FormGroup=new FormGroup({
+			form:new FormControl,
+			to:new FormControl
+		});
+		```
+3.	FormArray类
+		```
+		emails:FormArray=new FormArray([
+			new FormControl("a@a.com"),
+			new FormControl("b@b.com"),
+		]);
+		```
+***
+| 类名 | 指令 |
+|:---:|:---:|:---:|
+|FormGroup|formGroup|formGroupName|
+|FormControl|formControl|formControlName|
+|FormArrar|             |formArrayName|
+	```
+	formGroup,formGroupName,formControl,formControlName,formArrayName是在html模板中使用
+	formGroup,formControl则使用的是属性绑定语法
+	<form [formGroup]="formModel">
+		<input type="text" formControlName="username">
+	</form>
+	在formGroup范围内，才能使用formControlName,formGroupName,formArrayName,不能使用formControl属性绑定语法
+	其中formGroupName,formControlName,formArrayName用于连接html模板与控制器中的表单实例对象,值为字符串;不需要使用属性绑定语法
+	<div formGroupName="dateRange>
+		<input type="date" formControlName="from">
+		<input type="date" formControlName="to">
+	</div>
+	<ul formArrayName="emails">
+		<li *ngFor="let email of this.formModel.get('emails').controls">
+			<input type="text">
+		</li>
+	</ul>
+	```
+	```
+	<form [formGroup="formModel"]>		
+	</form>
+	```
+
+
+
+*	表单验证
+
+
 
 ### 与服务器通讯
 *	http
