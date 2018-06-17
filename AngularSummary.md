@@ -578,7 +578,7 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 			new FormControl("b@b.com"),
 		]);
 		```
-		
+
 ***
 
 | 类名 | 指令 |   |
@@ -605,12 +605,7 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 		</li>
 	</ul>
 	```
-	```
-	<form [formGroup="formModel"]>		
-	</form>
-	```
-
-
+	
 
 *	表单验证
 
