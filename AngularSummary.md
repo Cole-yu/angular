@@ -659,8 +659,6 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 		}
 	}
 
-
-
 ### 与服务器通讯
 *	创建web服务器(node.js,express框架)
 	npm init -y			//生成默认配置文件
@@ -671,7 +669,7 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	npm install -g nodemon		//代码发生改变时，自动更新并重启
 	nodemon server/auction_server.js   //执行程序
 
-*	http通讯
+*	http通讯,来自HttpModule模块,在subscribe被调用时才发送http请求
 1.	异步执行http请求的实现方式(callback回调,promise承诺,Rxjs响应式编程)	
 2.	http.d.ts（http源代码实现解析）
 	```
@@ -689,11 +687,11 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	```
 	dataSource:Observable<any>  			//定义一个任意数据类型的流对象来接收http响应的数据
 	constructor(private http:Http){	
-		this.dataSource=this.http.get('/products',{headers:myHeaders})		//只是定义了一个http请求，不会发送请求
+		this.dataSource=this.http.get('/products',{headers:myHeaders})		//只是定义了一个http请求,不会发送请求
 			.map(res=>res.json());
 	}
 	ngOnInit(){
-		this.dataSource.subscribe(data=>this.products=data);	//在subscribe订阅时才发送出http请求
+		this.dataSource.subscribe(data=>this.products=data);	//在subscribe订阅被调用时才会发送http请求
 	}
 	```
 4.	将客户端4200端口发出的请求转发到服务端8000端口所在的地方
@@ -714,23 +712,29 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 		retrun this.http.get('api/products').map(res=>res.json());
 	}
 	```
-6.  利用服务作为中间人,实现中间人模式
+6.  利用服务作为中间人,实现中间人模式，解耦依赖，实现可复用
+	```	
+	将ProductService这个服务作为中间人,定义一个searchEvent事件：searchEvent:EventEmitter<ProductSearchParams>=new EventEmitter();
+	在SearchComponent组件中发射SearchEvent这个事件：this.productService.searchEvent.emit(this.formModel.value);
+	在ProductComponent组件中订阅searchEvent这个事件的流：this.productService.searchEvent.subscribe(params=>this.products=this.productService.search(params))
+	```
 
 *	WebSocket通讯
-1. 	Websocket协议：低负载二进制协议,长链接,高效,双向
+1. 	Websocket协议：低负载二进制协议,长链接(每次请求时不需要携带连接相关的信息),高效,双向,延迟低
 2.  创建Websocket服务器
 	```
-	npm install ws --save
-	npm install @types/ws --save-dev
+	npm install ws --save        				//安装依赖库
+	npm install @types/ws --save-dev			//安装类型定义文件
+	angular提供了一个Http服务类,可以直接创建http对象;但没有提供Websocker服务类,需要自己写一个Websocket服务。
 	服务器端
 	//在服务中创建一个可观测的WebSocket流
 	createObservableSocket(url:string,id:number):Observable<any> {
-	    this.ws=new WebSocket(url);
-	    return new Observable<string>(									//返回一个流
+	    this.ws=new WebSocket(url);										//根据传入的url,连接到指定的Websocket服务器
+	    return new Observable<string>(									//返回一个可观测的流
 	      observer=> {
-	        this.ws.onmessage=(event)=>observer.next(event.data);
-	        this.ws.onerror=(event)=>observer.error(event);
-	        this.ws.onclose=(event)=>observer.complete();
+	        this.ws.onmessage=(event)=>observer.next(event.data);		//收到消息时，发射下一个元素
+	        this.ws.onerror=(event)=>observer.error(event);				//抛出异常
+	        this.ws.onclose=(event)=>observer.complete();				//发出流结束的信号
 	        this.ws.onopen=(event)=>this.sendMessage({productId:id});   //连接打开时
 	        return ()=>this.ws.close();									//回调函数，取消订阅的时候会关闭流，防止内存泄露
 	      }
@@ -741,9 +745,28 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	}    
 	```
 3.  websocket协议通讯
+	```
+	通过WebSocket实例化对象的clients属性,调用forEach方法，可以实现向所有客户端发送消息
+	在服务器端上
+	websocket.clients.forEach(client=>{
+		client.send('这会向每个链接着的客户端推送消息');
+	});	
+	if(ws.readyState==1){					// 不判断状态发送数据，客户端刷新时会报错：Gateway Timeout,客户端还在，否则即断开连接
+        let newBids=productIds.map(
+            pid=>({							// 根据商品Id获取商品价格
+                productId:pid,
+                bid:currentBids.get(pid)
+            })
+        );
+        console.log(newBids);
+        // ws.send('这是服务器定时推送过来的yfx');// 不要手贱,瞎鸡巴发送信息,前端没做处理会报错的,因此客户端收到了两条信息,无法做判断
+        ws.send(JSON.stringify(newBids));
+    }else{
+        subscriptions.delete(ws);// readyState不为1，浏览器已经断开连接，则删除客户端
+    }
+	```		
 
-### 构建与部属
-	多环境支撑（开发,测试,生产）
+### 构建与部署、多环境支撑（开发,测试,生产）
 
 
 
