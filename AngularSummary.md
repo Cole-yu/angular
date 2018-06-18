@@ -441,7 +441,7 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 		return value\*arg;
 	}
 	```
-*	async,异步流管道
+*	async,异步流管道，可以直接接收http请求返回的数据
 
 ### 向组件内传递参数
 *	路由中传递参数
@@ -533,7 +533,7 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	<form action="/regist" method="post">		
 	</form>
 	```
-*	模板式表单(FormsModule模块)
+*	模板式表单(FormsModule模块)：适用于简单表单
 三个html模板指令:NgForm,NgModel,NgModelGroup
 1.	ngForm
 	```
@@ -545,7 +545,7 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 2.	ngModel
 	```
 	添加了ngModel标记的元素,同时必须指定name属性    //<div>用户名:<input type="text" ngModel name="username"></div>
-	```
+	```	
 3.	ngModelGroup
 	```
 	<div ngMoelGroup="passwordsGroup">
@@ -553,16 +553,14 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 		<div>确认密码:<input type="password" ngModel name="pconfirm"></div>
 	</div>
 	```
-*	响应式表单(ReactiveFormsModule模块)
+*	响应式表单(ReactiveFormsModule模块)：适用于复杂表单,业务逻辑灵活
 三个类名,在控制器中使用，用于实例化一个对象
 1.	FormControl类
-
 		```
 		username:FormControl=new FormControl("yfx");
 		```
 
 2.	FormGroup类
-
 		```
 		formModel:FormGroup=new FormGroup({
 			form:new FormControl,
@@ -571,7 +569,6 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 		```
 
 3.	FormArray类
-
 		```
 		emails:FormArray=new FormArray([
 			new FormControl("a@a.com"),
@@ -605,15 +602,145 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 		</li>
 	</ul>
 	```
-	
 
-*	表单验证
+	```
+		控制器中实例化一个响应式表单模型
+		constructor(fb:FormBuilder){
+			this.formModel:fb.group({
+				username:[''],
+				mobilePhone:[''],
+				passwordsGroup:fb.group({
+					password:[''],
+					pConfirm:['']
+				})
+			})
+		}
+	```	
+
+*	校验器(validator)
+	required,minLength,maxLength,pattern,定义在angular的Validators类中
+	```
+	// 手机号校验器
+	export function mobileValidator(control:FormControl):any {  //传入的参数为要校验的表单对象
+	  const myreg=/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;// 正则表达式
+	  const isValid=myreg.test(control.value);
+	  console.log('mobile的校验结果是:'+isValid);
+	  return isValid?null:{mobile:true};	//校验通过时返回空，错误时返回一个错误对象
+	}
+	```
+	异步校验器，返回一个Observable对象
+	```
+	rerurn Observable.of(valid?null:{mobile:true).delay(5000);//校验通过返回一个空对象
+	```
+*	表单状态字段属性
+|||
+|:---:|:---:|
+|touched|untouched|
+|pristine|dirty|	
+|pending||
+
+	在html模板中使用
+	formModel.get('username').touched;
+	hasError('','[]')语法解析：第一个为校验器(函数名称)，第二个为数组对象,每个值都是需要校验的对象
+	formModel.haserror('positiveNumber','[price]');//判断输入的价格字段是否为正数
+
+*	响应式表单校验(通过编写校验器,实例化表单对象模型来实现)
+*	模板式表单校验(通过编写自定义指令来实现)
+
+### 指令(directive)
+	指令是一个没有模板的组件
+	@Directive({
+		selector:'[mobile]'  //选择器中带有[],所以指令是作为html元素的属性来使用,组件是作为html标签来使用(选择器上没有一对[])
+		providers:[{provider:NG_VALIDATORS,useValue:mobileValidator,multi:true}] //useValue将指令与自定义的校验器mobileValidator连接到一起,包装成mobile指令
+	})
+	export class MobileValidator{
+		constructor(){
+
+		}
+	}
 
 
 
 ### 与服务器通讯
-*	http
-*	WebSocket
+*	创建web服务器(node.js,express框架)
+	npm init -y			//生成默认配置文件
+	npm i @types/node --save   //安装node类型定义文件,使得可以使用typescript来进行开发,从javascript开发=>typescript开发
+
+	express框架,处理Restful请求
+
+	npm install -g nodemon		//代码发生改变时，自动更新并重启
+	nodemon server/auction_server.js   //执行程序
+
+*	http通讯
+1.	异步执行http请求的实现方式(callback回调,promise承诺,Rxjs响应式编程)	
+2.	http.d.ts（http源代码实现解析）
+	```
+	GET请求接口(实现代码定义在http.d.ts文件中):
+	get(url: string, options?: RequestOptionsArgs): Observable<Response>;//返回一个Observable流，通过订阅这个流实现http请求
+	http请求参数：
+	RequestOptionsArgs通常情况下用来传headers,请求头	
+	```
+3.	在http请求中添加请求头
+	```
+	let myHeaders:Headers=new Headers();				//定义一个http请求头部
+	myHeaders.append('Authorization','Basic 123456');  //使用append往头部中添加头部字段
+	```
+	在constructor中定义一个http请求，但不会发射，在ngOnInit中流，实现http请求获取数据
+	```
+	dataSource:Observable<any>  			//定义一个任意数据类型的流对象来接收http响应的数据
+	constructor(private http:Http){	
+		this.dataSource=this.http.get('/products',{headers:myHeaders})		//只是定义了一个http请求，不会发送请求
+			.map(res=>res.json());
+	}
+	ngOnInit(){
+		this.dataSource.subscribe(data=>this.products=data);	//在subscribe订阅时才发送出http请求
+	}
+	```
+4.	将客户端4200端口发出的请求转发到服务端8000端口所在的地方
+	```
+	1.添加proxy.conf.json来实现业务逻辑
+	{ 
+	  "/api":{    	   //将以/api开头的发出的请求，自动转发到http://localhost:8000这个地址
+	    "target":"http://localhost:8000"
+	  }
+	}
+	2.在项目启动时，执行proxy.conf.json文件
+	修改package.json启动脚本，"start":"ng serve --proxy-config proxy.conf.json"
+	```
+5.  使用http请求的方法返回的是一个流(Observable),因此接收的对象也必须是一个流
+	```
+	products:Observable<product[]>	//定义一个流数据结构的对象来接收http请求传回的数据
+	getProduct():Observable<Product[]>{
+		retrun this.http.get('api/products').map(res=>res.json());
+	}
+	```
+6.  利用服务作为中间人,实现中间人模式
+
+*	WebSocket通讯
+1. 	Websocket协议：低负载二进制协议,长链接,高效,双向
+2.  创建Websocket服务器
+	```
+	npm install ws --save
+	npm install @types/ws --save-dev
+	服务器端
+	//在服务中创建一个可观测的WebSocket流
+	createObservableSocket(url:string,id:number):Observable<any> {
+	    this.ws=new WebSocket(url);
+	    return new Observable<string>(									//返回一个流
+	      observer=> {
+	        this.ws.onmessage=(event)=>observer.next(event.data);
+	        this.ws.onerror=(event)=>observer.error(event);
+	        this.ws.onclose=(event)=>observer.complete();
+	        this.ws.onopen=(event)=>this.sendMessage({productId:id});   //连接打开时
+	        return ()=>this.ws.close();									//回调函数，取消订阅的时候会关闭流，防止内存泄露
+	      }
+	    ).map(message=> {
+	      JSON.parse(message);
+	      console.log('服务中打印出来的数据:'+message);
+	    });
+	}    
+	```
+3.  websocket协议通讯
 
 ### 构建与部属
 	多环境支撑（开发,测试,生产）
