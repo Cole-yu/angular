@@ -1,0 +1,412 @@
+// colors
+$white:  #fff !default;
+$black:  #000 !default;
+$red:    #d9534f !default;
+$orange: #f0ad4e !default;
+$yellow: #ffd500 !default;
+$green:  #5cb85c !default;
+$blue:   #3792d8 !default;
+$teal:   #17a2b8 !default;
+$pink:   #ff5b77 !default;
+$purple: #613d7c !default;
+
+
+// Create grayscale
+$gray-dark: #313334 !default;
+$gray:                      #464a4c !default;
+$gray-light:                #636c72 !default;
+$gray-lighter:              #eceeef !default;
+$gray-lightest:             #f7f7f9 !default;
+
+
+// Reassign color vars to semantic color scheme
+$brand-primary:             $blue !default;
+$brand-success:             $green !default;
+$brand-info:                $teal !default;
+$brand-warning:             $orange !default;
+$brand-danger:              $red !default;
+$brand-inverse:             $gray-dark !default;
+
+$theme-colors: () !default;
+$theme-colors: map-merge((
+  "primary":    $brand-primary,
+  "success":    $brand-success,
+  "info":       $brand-info,
+  "warning":    $brand-warning,
+  "danger":     $brand-danger
+), $theme-colors);
+
+
+// Options
+//
+// Quickly modify global styling by enabling or disabling optional features.
+$enable-rounded:            true !default;
+$enable-shadows:            true !default;
+$enable-gradients:          true !default;
+$enable-transitions:        true !default;
+$enable-hover-media-query:  false !default;
+$enable-grid-classes:       true !default;
+$enable-print-styles:       true !default;
+
+$border-default:            solid 1px darken($gray-lighter, 6%); // #d0d5d8
+$border-actived:            solid 3px $brand-success;
+
+
+// Body
+//
+// Settings for the `<body>` element.
+$body-bg-start:   lighten($teal, 10%) !default;
+$body-bg-middle:  #319499 !default; // #319499
+$body-bg-end:     #034f67 !default; // #034f67
+$body-color:      $gray-dark !default;
+
+
+// Links
+//
+// Style anchor elements.
+$link-color:            $brand-success !default;
+$link-decoration:       none !default;
+$link-hover-color:      darken($link-color, 15%) !default;
+$link-hover-decoration: underline !default;
+
+
+// Animate transition
+//
+// ===================================
+$transition-base:        all .2s ease-in-out !default;
+$transition-fade:        opacity .15s linear !default;
+$transition-collapse:    height .35s ease !default;
+$transition-color:       color .15s linear !default;
+
+
+// Z-index master list
+//
+// ===================================
+$zindex-navbars:    99 !default;
+$zindex-alert:      98 !default;
+$zindex-menus-item: 10 !default;
+
+
+// Fonts
+//
+// Font, line-height, and color for body text, headings, and more.
+$font-size-base:  14px !default;
+$font-size-sm:    12px !default;
+$font-size-lg:    16px !default;
+$font-size-xl:    22px !default;
+$font-size-xxl:   36px !default;
+
+
+// Spacing default vars
+//
+// ===================================
+$spacing-default: 15px !default;
+$spacing-lg: 20px !default;
+$spacing-xl: 30px !default;
+$spacing-sm: 10px !default;
+$spacing-xs: 6px !default;
+
+
+// Site containers
+//
+// ===================================
+$menus-width:   183px;
+$menus-border:  solid 1px $gray-lighter;
+
+$content-padding: $spacing-default;
+
+$filter-list-width: 240px;
+
+
+// Buttons
+//
+// ===================================
+$btn-focus-shadow: 0 0 0 2px !default;
+
+
+// Calendar
+//
+// ===================================
+$calendar-divider:                  $border-default; // #d0d5d8
+
+$calendar-heading-height:           70px;
+$calendar-heading-left-width:       90px;
+
+$calendar-td-size:                  26px;
+$calendar-tag-shadow:               0 0 0 2px;
+$calendar-event-flag-size:          5px;
+$calendar-color-default:            lighten($gray, lightness($gray)); // #8e9396
+$calendar-color-others:             lighten($brand-danger, lightness($gray)); // #f3c8c7
+$calendar-color-current:            $white;
+$calendar-color-hover:              $brand-primary;
+$calendar-bg-current:               $brand-primary;
+$calendar-tag-border-color:         transparent;
+$calendar-tag-border-color-today:   $brand-warning;
+$calendar-tag-border-color-current: $calendar-bg-current;
+$calendar-event-flag-bg:            $brand-danger;
+$calendar-transition:               all .15s ease-in-out;
+
+$calendar-footer-height:            112px;
+$calender-footer-content-offset:    $calendar-heading-left-width;
+
+
+// Panels vars
+//
+// ===================================
+$panel-box-shadow:      0 2px 10px rgba($black, .4) !default;
+$panel-margin-default:  12px;
+
+// panel navbar
+$panel-nav-padding-x:     10px;
+$panel-nav-padding-y:     10px;
+$panel-nav-border-width:  3px;
+$panel-nav-border-color:  $brand-success;
+
+
+// Navigation bar
+//
+// Settings for the navigation
+$navbar-bg-start:           #14a5d4 !default;
+$navbar-bg-middle:          #1389ad !default;
+$navbar-bg-end:             #117899 !default;
+$navbar-link-color:         $gray-lighter !default;
+$navbar-link-active-color:  #185f75 !default;
+$navbar-font-size:          $font-size-base;
+$navbar-divider-start:      #3fadde !default;
+$navbar-divider-middle:     #51b5d7 !default;
+$navbar-divider-end:        #4ab7d4 !default;
+
+$navbar-box-shadow:         0 3px 5px rgba($black, .35) !default;
+
+$navbar-height:             42px !default;
+$navbar-padding-x:          15px !default;
+$navbar-padding-y:          0 !default;
+
+$nav-pills-padding-x: $spacing-default !default;
+$nav-pills-padding-y: $spacing-default/2 !default;
+
+
+// Alert bar
+//
+// Settings for the alert
+$alert-border: 0;
+$alert-shadow: 0 3px 10px rgba($black, .3) !default;
+
+
+// Site menu vars
+//
+// ===================================
+$menus-item-border:       solid 1px $gray-lighter !default;
+$menus-item-padding:      $spacing-default $spacing-default $spacing-default 25px !default;
+$menus-item-offset:       1px !default;
+$menus-item-color:        $gray-dark !default;
+$menus-item-color-active: $brand-primary !default;
+
+
+// Pagination vars
+//
+// ===================================
+$page-margin-y:         $spacing-default !default;
+$page-margin-x:         0 !default;
+$page-link-color:       $gray-light !default;
+$page-link-hover-focus: $brand-primary !default;
+$page-link-active:      darken($page-link-hover-focus, 15%) !default;
+$page-default-height:   30px !default;
+
+
+// Pagination vars
+//
+// ===================================
+$panel-line-height:           1 !default;
+$panel-title-font-size:       14px !default;
+$panel-title-padding-bottom:  10px !default;
+$panel-title-padding-left:    15px !default;
+$panel-title-border-bottom:   dashed 1px #ccc !default;
+$panel-title-border-left:     solid 4px $green !default;
+
+
+// Site footers vars
+//
+// ===================================
+$footer-box-shadow: 0 none !default;
+
+
+// Home page vars
+//
+// variable banner tips...
+$home-banner-caption-bg:          rgba($black, .5) !default;
+$home-banner-indicators-width:    100px !default;
+$home-banner-image-width:         100% !default;
+$home-banner-image-height:        350px !default;
+$home-banner-caption-date-width:  80px !default;
+$home-banner-caption-padding-x:   10px !default;
+$home-banner-caption-padding-y:   12px !default;
+$home-banner-caption-padding-r:   $home-banner-caption-padding-x + $home-banner-caption-date-width + $home-banner-indicators-width !default;
+
+// 全局日历组件
+//
+//
+.app-calendar {
+  width: 100%;
+  display: block;
+  border: $calendar-divider;
+  margin-top: $spacing-sm;
+
+  // 设置日历顶部盒子
+  .calendar-heading {
+    position: relative;
+    height: $calendar-heading-height;
+    text-align: center;
+    border-bottom: $calendar-divider;
+
+    .heading-left {
+      width: $calendar-heading-left-width;
+      height: $calendar-heading-height;
+      position: absolute;
+      left: 0;
+      top: 0;
+
+      .day {
+        font-size: $font-size-xxl;
+      }
+
+      .weekend {
+        margin-top: -$spacing-xs;
+      }
+    }
+
+    .heading-right {
+      padding: $spacing-default;
+      border-left: $calendar-divider;
+      margin-left: $calendar-heading-left-width;
+      line-height: $calendar-heading-height - ($spacing-default)*2;
+      font-size: $font-size-lg;
+
+      .btn {
+        width: $calendar-heading-height - ($spacing-default)*2;
+        height: $calendar-heading-height - ($spacing-default)*2;
+        text-align: center;
+        border-radius: 50%;
+        outline: none;
+      }
+    }
+  }
+
+  // 设置日历表格样式
+  .calendar-body {
+    padding: $spacing-xs 0;
+
+    .calendar-table {
+      width: 100%;
+      border-collapse: collapse;
+
+      // 表格行高
+      tr {
+        line-height: $calendar-td-size;
+
+        th, td {
+          text-align: center !important;
+
+          //@include user-select(none);
+        }
+      }
+    }
+  }
+
+  // 本月 文字颜色
+  .current-month {
+    color: $calendar-color-default;
+  }
+
+  // 其他月颜色
+  .other-month {
+    color: $calendar-color-others;
+  }
+
+  .calendar-tag {
+    position: relative;
+    display: inline-block;
+    width: $calendar-td-size;
+    height: $calendar-td-size;
+    line-height: $calendar-td-size;
+    border-radius: 50%;
+    background-color: transparent;
+    cursor: pointer;
+
+    //@include transition();
+
+    // 小红点事件标记
+    .has-events {
+      position: absolute;
+      top: $calendar-td-size /6;
+      right: 0;
+      width: $calendar-event-flag-size;
+      height: $calendar-event-flag-size;
+      border-radius: 50%;
+      background-color: $calendar-event-flag-bg;
+    }
+
+    &:hover {
+      color: $calendar-color-hover;
+    }
+
+    &.today {
+      //@include box-shadow($calendar-tag-shadow $calendar-tag-border-color-today);
+    }
+
+    &.today.current, &.current {
+      background-color: $calendar-bg-current;
+      color: $calendar-color-current;
+      //@include box-shadow($calendar-tag-shadow $calendar-bg-current);
+      cursor: default;
+
+      .has-events {
+        display: none;
+      }
+    }
+
+  }
+
+  .calendar-footer {
+    position: relative;
+    height: $calendar-footer-height;
+    border-top: $calendar-divider;
+    padding: 5px 0;
+    overflow: hidden;
+
+    .footer-left {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: $calendar-heading-left-width;
+      height: 100%;
+      border-right: $calendar-divider;
+    }
+
+    dl.dl-horizontal {
+      dt, dd {
+        line-height: 22px;
+      }
+      dt {
+        width: $calender-footer-content-offset;
+        text-align: center;
+      }
+
+      dd {
+        //@extend .text-ellipsis;
+        margin-left: $calender-footer-content-offset + $spacing-sm;
+        padding-right: $spacing-lg;
+        position: relative;
+
+        .fa {
+          position: absolute;
+          line-height: 22px;
+          right: 0;
+          font-size: $font-size-lg;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+}

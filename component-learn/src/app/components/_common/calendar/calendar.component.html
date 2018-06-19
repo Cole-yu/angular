@@ -1,0 +1,54 @@
+<div class="app-calendar">
+  <!-- calendar heading -->
+  <div class="calendar-heading" #calendarHeading>
+    <div class="heading-left">
+      <div class="day">{{date|date: 'dd'}}</div>
+      <div class="weekend">{{date|date: 'EEEE': '+0800'}}</div>
+    </div>
+    <div class="heading-right clearfix">
+      <button class="btn btn-sm btn-primary pull-left" (click)="prevMonth()"><i class="fa fa-2x fa-angle-left" aria-hidden="true"></i></button>
+      {{date|date: 'yyyy-MM'}}
+      <button class="btn btn-sm btn-primary pull-right" (click)="nextMonth()"><i class="fa fa-2x fa-angle-right" aria-hidden="true"></i></button>
+    </div>
+  </div>
+
+  <!-- calendar body -->
+  <div class="calendar-body">
+    <table class="calendar-table">
+      <thead><tr><th>日</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th></tr>
+      </thead>
+      <tbody #calendarBody>
+      <tr *ngFor="let row of calendar; let i = index">
+        <td width="14.28571428571429%" *ngFor="let col of row" class="{{col.isCurrentMonth? 'current-month' : 'other-month'}}">
+          <span class="calendar-tag" [ngClass]="{'current': col.isCurrentDay, 'today': col.isToday}" (click)="selectEvent(col)">
+            {{col.day}}
+            <span *ngIf="col.events && col.events.length > 0" class="has-events"></span>
+          </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- calendar footer -->
+  <div class="calendar-footer">
+    <div class="footer-left"></div>
+    <dl class="dl-horizontal">
+      <ng-template ngFor let-event [ngForOf]="currentEvents">
+        <!--为每个currentEvents中的对象创建一个模板-->
+        <dt>{{event.date[0]|date: 'hh:mm'}}-{{event.date[1]|date: 'hh:mm'}}</dt>
+        <dd>{{event.event}}<i class="fa fa-fw fa-trash-o" aria-hidden="true"></i></dd>
+      </ng-template>
+      <dt>dsafsdf</dt>
+      <dd>safdsadfasdf<i class="fa fa-fw fa-trash-o" aria-hidden="true"></i></dd>
+      <dt>dsafsdf</dt>
+      <dd>safdsadfasdf<i class="fa fa-fw fa-trash-o" aria-hidden="true"></i></dd>
+      <dt>dsafsdf</dt>
+      <dd>safdsadfasdf<i class="fa fa-fw fa-trash-o" aria-hidden="true"></i></dd>
+    </dl>
+    <dl class="dl-horizontal">
+      <dt></dt>
+      <dd class="text-center"><a (click)="releaseAgenda.show('0')">添加</a></dd>
+    </dl>
+  </div>
+</div>
