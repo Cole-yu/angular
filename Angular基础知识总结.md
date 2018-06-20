@@ -302,7 +302,7 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 
 
 ### 依赖注入
-	控制反转，IOC容器（Inverse of Control）	
+	控制反转，IOC容器（Inverse of Control）	//ng g service serviceName
 *	提供器(providers)：		//{provider:token,useClass:className}
 	```
 	providers:[ProductService]
