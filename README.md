@@ -1,6 +1,5 @@
 # Angular基础知识总结
 
-
 ### webstorm中可以使用alt+enter组合键快速引入需要声明的模块
 
 ### AngularJS与Angular的差异比较
