@@ -5,7 +5,6 @@ import { CalendarComponent } from './components/_common/calendar/calendar.compon
 import { SeachComponent } from './components/_common/seach/seach.component';
 import { StarComponent } from './components/_common/star/star.component';
 import { AlertComponent } from './components/_common/alert/alert.component';
-import { MyUploadComponent } from './components/my-upload/my-upload.component';
 
 @NgModule({
   declarations: [
@@ -13,8 +12,7 @@ import { MyUploadComponent } from './components/my-upload/my-upload.component';
     CalendarComponent,
     SeachComponent,
     StarComponent,
-    AlertComponent,
-    MyUploadComponent
+    AlertComponent
   ],
   imports: [
     BrowserModule
