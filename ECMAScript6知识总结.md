@@ -204,17 +204,16 @@
 		//finally
 	});
 * 	Promise对象的方法:
-	all()方法
-	race()方法
-	Promise.resolve()
-	Promise.reject()
-	const p = Promise.reject('出错了');
+	```
+	all()方法,race()方法,Promise.resolve(),Promise.reject()
+	const promise = Promise.reject('出错了');
 	// 等同于
 	let promise = new Promise((resolve, reject) => reject('出错了'));
 	promise.then(function(){
 		//doSomething();
 	})
 	.catch(err=>console.log(err));			//出错了
+	```
 
 ### async
 	
@@ -223,8 +222,17 @@
 ### Decorator(装饰器)
 
 ### Class
+	static		//只能被类所使用,不能被实例所继承
+	private 	//只能被当前类所使用,子类和对象均不可使用
+	protected	//只能被类和子类使用
 
 ### ECMAScript Modules
+
+### defer
+	下载完成后,文件要在所有元素解析完成之后执行js代码
+
+### async
+	下载完成后,立即异步执行js代码
 
 
 	
