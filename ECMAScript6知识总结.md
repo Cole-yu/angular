@@ -8,9 +8,11 @@
 	```
 
 ### 原始数据类型Symbol(第七种数据类型)
-	ES6 引入了一种新的原始数据类型Symbol,表示独一无二的值.
-	原有的六种数据类型基础：undefined、null、布尔值(Boolean)、字符串(String)、数值(Number)、对象(Object)
-*	注意事项：Symbol函数的参数只是表示对当前Symbol值的描述,因此相同参数的Symbol函数的返回值是不相等的。
+	ES6 引入了一种新的原始数据类型Symbol,表示独一无二的值;
+	原有的六种数据类型基础：undefined、null、布尔值(Boolean)、字符串(String)、数值(Number)、对象(Object);
+*	注意事项：
+1.	注意，Symbol函数前不能使用new命令,否则会报错
+2.	Symbol函数的参数只是表示对当前Symbol值的描述,因此相同参数的Symbol函数的返回值是不相等的。
 	```
 	// 没有参数的情况
 	let s1 = Symbol();
@@ -32,14 +34,15 @@
 	```
 *   使用示例:
 	```  
-	var a= {}
+	var a= {};
     Object.defineProperty(a,"b",{
       value:123
-    })
+    });
     console.log(a.b); 				//123
 	```
 
-### 属性描述符
+### 属性描述符:
+	学习链接:https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty
 
 || configurable | enumerable | value | writable | get | set |
 |:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -71,8 +74,8 @@
 
 
 ### find方法:找出第一个符合条件的数组成员
-	arr.find(function(value,index,arr){   		//vlaue为每个元素,idnex为当前索引,arr为整个数组
-		//doSomething()   						//找出第一个返回值为true的成员,如果没有符合条件的成员,则返回undefined
+	arr.find(function(value,index,arr){			//vlaue为每个元素,idnex为当前索引,arr为整个数组
+		//doSomething();						//找出第一个返回值为true的成员,如果没有符合条件的成员,则返回undefined
 	});
 	方法示例:
 	[1,2,-5,10].find(function(value){
@@ -193,6 +196,29 @@
 	new Map(JSON对象);  通过JSON.parse将json字符串转化为JSON对象后在作为Map参数传入
 	```
 
+### Proxy可以理解为在目标对象之前架设一层"拦截",外界对该对象的访问,都必须先通过这层拦截,因此提供了一种机制,可以对外界的访问进行过滤和改写	
+	new Proxy(targer,handler)  				//target参数表示所要拦截的目标对象,handler参数也是一个对象，用来定制拦截行为。
+
+*	代码示例:
+	```
+	var proxy = new Proxy({}, {				//被代理的目标对象{},第二个参数为配置对象,提供一个对应的处理函数,该函数将拦截对应的操作
+	  get: function(target, property) {     //配置对象有一个get方法,用来拦截对目标对象属性的访问请求
+	    return 35;
+	  }
+	});
+	proxy.name     //35
+	proxy.foo      //35
+	```
+
+####	常见的拦截行为
+*	get(target, propKey, receiver)          	//拦截对象属性的读取,当被代理对象的属性被读取时,执行get后面的函数(以下同理)
+*	set(target, propKey, value, receiver)		//拦截对象属性的设置
+*	has(target, propKey)                    	//拦截propKey in proxy的遍历操作,返回一个布尔值
+*   deleteProperty(target, propKey)         	//拦截delete proxy[propKey]的操作,返回一个布尔值
+*	apply(target, object, args)             	//拦截Proxy实例作为函数调用的操作
+*	defineProperty(target, propKey, propDesc)	//拦截属性描述符定义
+
+
 ### WeakMap与Map类似,但是键名必须为对象
 
 ### forEach,for...in与for...of遍历可迭代对象
@@ -264,7 +290,7 @@
 	then方法可以接受两个回调函数作为参数。第一个回调函数是Promise对象的状态变为resolved时调用,第二个回调函数是Promise对象的状态变为rejected时调用。其中,第二个函数是可选的,不一定要提供。这两个函数都接受Promise对象传出的值作为参数。
 	```
 
-####Promise对象的方法:	
+### Promise对象的方法:	
 *	Promise.all()方法
 	```
 	Promise.all方法用于将多个Promise实例,包装成一个新的Promise实例
@@ -358,7 +384,7 @@
 	sync函数完全可以看作多个异步操作,包装成的一个Promise对象,而await命令就是内部then命令的语法糖。
 	```
 
-####async函数的实现原理,就是将Generator函数和自动执行器,包装在一个函数里
+### async函数的实现原理,就是将Generator函数和自动执行器,包装在一个函数里
 
 	异步遍历器的最大的语法特点,就是调用遍历器的next方法,返回的是一个Promise对象。	
 
