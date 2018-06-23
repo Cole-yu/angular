@@ -1,6 +1,43 @@
 # 	ECMA2015(ES6)语法
 	参考链接:http://es6.ruanyifeng.com
 
+###	Babel转码器,将ES6代码转为ES5代码
+	Babel的配置文件是.babelrc,存放在项目的根目录下,该文件用来设置转码规则和插件，基本格式如下。
+	{
+		"presets": [						//presets字段设定转码规则
+		  "es2015"							//ES6语法的代码
+		  "latest",
+		  "react",
+		  "stage-2"
+		],
+		"plugins": []
+	}
+*  	babel-cli工具,用于命令行转码
+	```
+	可以将babel-cli安装在项目之中。
+	npm install --save-dev babel-cli       //安装依赖包
+	```
+*	babel-node命令
+	```
+	babel-cli工具自带一个babel-node命令,可以在控制台中进入支持ES6语法的REPL环境,可以直接运行ES6代码
+	```
+* 	babel-core
+	如果某些代码需要调用Babel的API进行转码,就要使用babel-core模块
+	npm install babel-core --save
+	.transform('babelify', {
+        presets: ['es2015'],   //生成ES2015语法规则的代码
+        extensions: ['.ts']
+    })
+
+
+### ESLint:用于静态检查代码的语法和风格
+
+### Mocha:是一个测试框架,用于单元测试
+	如果需要执行使用ES6语法的测试脚本,可以修改package.json的scripts.test。
+	"scripts": {
+	  "test": "mocha --ui qunit --compilers js:babel-core/register"   //--compilers参数指定脚本的转码器,规定后缀名为js的文件,都需要使用babel-core/register先转码
+	}
+
 ###	\_proto_属性	
 	一个实例对象的属性,指向创建这个实例的构造函数的原型;
 	obj.constructor.prototype === obj._proto_ ;	
@@ -206,7 +243,7 @@
 	```	
 	new Map(JSON对象);  通过JSON.parse将json字符串转化为JSON对象后在作为Map参数传入	
 	```
-	
+
 ### Proxy可以理解为在目标对象之前架设一层"拦截",外界对该对象的访问,都必须先通过这层拦截,因此提供了一种机制,可以对外界的访问进行过滤和改写	
 	new Proxy(targer,handler)  				//target参数表示所要拦截的目标对象,handler参数也是一个对象，用来定制拦截行为。
 
