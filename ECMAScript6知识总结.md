@@ -1,6 +1,59 @@
 # 	ECMA2015(ES6)语法
 	参考链接:http://es6.ruanyifeng.com
 
+###	\_proto_属性
+	```	
+	一个实例对象的属性,指向创建这个实例的构造函数的原型;
+	obj.constructor.prototype === obj._proto_ ;
+	```
+
+### 原始数据类型Symbol(第七种数据类型)
+	ES6 引入了一种新的原始数据类型Symbol,表示独一无二的值.
+	原有的六种数据类型基础：undefined、null、布尔值(Boolean)、字符串(String)、数值(Number)、对象(Object)
+*	注意事项：Symbol函数的参数只是表示对当前Symbol值的描述,因此相同参数的Symbol函数的返回值是不相等的。
+	```
+	// 没有参数的情况
+	let s1 = Symbol();
+	let s2 = Symbol();
+	s1 === s2 												// false
+	// 有参数的情况
+	let s1 = Symbol('foo');
+	let s2 = Symbol('foo');
+	s1 === s2 												// false
+	```
+
+###	Object.defineProperty(obj, property, descriptor)
+*	作用:该方法会直接在一个对象上定义一个新属性,或者修改一个对象的现有属性,并返回这个对象。
+*	该方法接受三个参数,而且都是必填的:
+	```	
+	第一个参数:目标对象;
+	第二个参数:需要定义的属性或方法的名字;
+	第三个参数:目标属性所拥有的特性(descriptor:configurable,enumerable,value,writable)
+	```
+*   使用示例:
+	```  
+	var a= {}
+    Object.defineProperty(a,"b",{
+      value:123
+    })
+    console.log(a.b); 				//123
+	```
+
+### 属性描述符
+
+|| configurable | enumerable | value | writable | get | set |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+|数据描述符|Yes|Yes|Yes|Yes|No|No|
+|存取描述符|Yes|Yes|No|No|Yes|Yes|
+
+*	如果一个描述符不具有value,writable,get和set任意一个关键字,那么它将被认为是一个数据描述符。如果一个描述符同时有(value或writable)和(get或set)关键字,将会产生一个异常。
+
+### 数据描述符
+	configurable,enumerable,value,writable
+
+### 存取描述符
+	configurable,enumerable,get,set	
+
 ###  新增let和const,块级作用域
 
 ###  结构赋值
@@ -116,14 +169,10 @@
 	  [2, 'two'],
 	  [3, 'three'],
 	]);
-	[...map.keys()]
-	// [1, 2, 3]
-	[...map.values()]
-	// ['one', 'two', 'three']
-	[...map.entries()]
-	// [[1,'one'], [2, 'two'], [3, 'three']]
-	[...map]
-	// [[1,'one'], [2, 'two'], [3, 'three']]
+	[...map.keys()] 							// [1, 2, 3]
+	[...map.values()] 							// ['one', 'two', 'three']
+	[...map.entries()] 							// [[1,'one'], [2, 'two'], [3, 'three']]
+	[...map] 									// [[1,'one'], [2, 'two'], [3, 'three']]
 	```
 
 * 	Map与数组,对象,JSON之间的相互转化
@@ -154,7 +203,7 @@
 	for...in... //遍历索引==获取键名
 
 ### Iterator(遍历器)
-	next()方法返回包含value和done两个属性的对象{value:'foo'，done:boolean}//false表示没有结束,true表示结束
+	next()方法返回包含value和done两个属性的对象{value:'foo'，done:boolean}    	//false表示没有结束,true表示结束
 *	Symbol.iterator属性:
 	```
 	返回遍历器对象iterator,调用该对象的next方法,在返回一个值的同时,自动将内部指针移到下一个实例
@@ -193,8 +242,10 @@
 
 ### Promise对象
 	相当于一个容器,里面保存着某个未来才会结束的事件(通常是一个异步操作)的结果
+	pending(进行中),fulfilled(已成功),rejected(已失败);
+	有了Promise对象,就可以将异步操作以同步操作的流程表达出来,避免了层层嵌套的回调函数。
 	let promise=new Pormise;
-	promise.then(function(data) { //cb
+	promise.then(function(value) { 				//cb
 	    // success
 	})
 	.catch(function(err) {
@@ -203,28 +254,207 @@
 	.finally(function(){
 		//finally
 	});
-* 	Promise对象的方法:
+*	Promise实例生成以后,可以用then方法分别指定resolved状态和rejected状态的回调函数
 	```
-	all()方法,race()方法,Promise.resolve(),Promise.reject()
-	const promise = Promise.reject('出错了');
+	promise.then(function(value) {
+	  // success
+	}, function(error) {
+	  // failure
+	});
+	then方法可以接受两个回调函数作为参数。第一个回调函数是Promise对象的状态变为resolved时调用,第二个回调函数是Promise对象的状态变为rejected时调用。其中,第二个函数是可选的,不一定要提供。这两个函数都接受Promise对象传出的值作为参数。
+	```
+
+####Promise对象的方法:	
+*	Promise.all()方法
+	```
+	Promise.all方法用于将多个Promise实例,包装成一个新的Promise实例
+	Promise.all方法接受一个数组作为参数,p1、p2、p3都是Promise实例,如果不是,就会先调用下面讲到的Promise.resolve方法,将参数转为Promise实例,再进一步处理。
+	const p = Promise.all([p1, p2, p3]);
+	p的状态由p1、p2、p3决定,分成两种情况:
+	（1）只有p1、p2、p3的状态都变成fulfilled,p的状态才会变成fulfilled,此时p1、p2、p3的返回值组成一个数组,传递给p的回调函数
+	（2）只要p1、p2、p3之中有一个被rejected,p的状态就变成rejected,此时第一个被reject的实例的返回值,会传递给p的回调函数
+	```
+*	Promise.race()方法
+	```
+	Promise.race方法同样是将多个Promise实例,包装成一个新的Promise实例
+	const p = Promise.race([p1, p2, p3]);
+	上面代码中,只要p1、p2、p3之中有一个实例率先改变状态,p的状态就跟着改变	
+	const promise = Promise.race([
+	  fetch('/resource'),										//向服务器获取资源,只有5秒时间,否则后面函数结果会被race方法捕获
+	  new Promise(function (resolve, reject) {					
+	    setTimeout(() => reject(new Error('请求超时!')), 5000)   //5秒钟后状态改为reject
+	  })
+	]);
+	promise.then(vlaue=>console.log(value))
+		   .catch(err=>console.error(err));
+	上面代码中,如果5秒之内fetch方法无法返回结果,promise对象的状态就会变为rejected,从而触发catch方法指定的回调函数。
+	```
+*   Promise.resolve()方法
+	```
+	将现有对象转为Promise对象
+	Promise.resolve('foo')
+	// 等价于
+	new Promise(resolve => resolve('foo'))
+	```
+*	Promise.reject()方法
+	```
+	let promise = Promise.reject('出错了');
 	// 等同于
 	let promise = new Promise((resolve, reject) => reject('出错了'));
 	promise.then(function(){
 		//doSomething();
 	})
-	.catch(err=>console.log(err));			//出错了
+	.catch(err=>console.log(err));											//出错了
+	```	
+* 	Promise.try()方法
+	```
+	作用：让同步函数同步执行,异步函数异步执行,并且让它们具有统一的API
+	第一种方法:在立即执行函数中添加async函数
+	const f = () => console.log('now');
+	(async () => f())();  
+	console.log('next');
+	// now
+	// next
+	第二种方法:
+	const f = () => console.log('now');
+	Promise.try(f);
+	console.log('next');
+	// now
+	// next
 	```
 
-### async
-	
+### fetch API:获取资源的接口
+	// 通过fetch获取百度的错误提示页面
+	fetch('https://www.baidu.com/search/error.html', {
+	    method: 'POST',
+	    headers: new Headers({
+	      'Content-Type': 'application/x-www-form-urlencoded', 				//指定提交方式为表单提交
+		  'Accept': 'application/json'										// 通过头指定,获取的数据类型是JSON
+	    }),
+	    body: new URLSearchParams([["foo", 1],["bar", 2]]).toString()
+	})
+	.then((res)=>{
+	    return res.text()       //获取的是JSON数据时:可以使用res.json()返回一个Promise对象,将对象解析成JSON对象
+	})
+	.then((res)=>{
+	    console.log(res)
+	})	
+
+### async函数:用于解决Promise产生的回调地狱问题
+	async函数就是Generator函数的语法糖,对Generator函数做了如下四点改进:
+*	内置执行器
+* 	更直白的语义
+	```
+	async替换星号(*),await替换yield
+	async表示函数里有异步操作,await表示紧跟在后面的表达式需要等待结果
+	```
+*   适用性更广
+	```
+	yield只能是Thunk函数或Promise对象,而async函数后面可以是Promise对象和原始类型的值(数值、字符串和布尔值,但这时等同于同步操作)
+	```
+*   返回值是Promise对象
+	```
+	async函数的返回结果已经被new Promise.resolve()处理成为Promise对象可以用then方法指定下一步的操作;
+	sync函数完全可以看作多个异步操作,包装成的一个Promise对象,而await命令就是内部then命令的语法糖。
+	```
+
+####async函数的实现原理,就是将Generator函数和自动执行器,包装在一个函数里
+
+	异步遍历器的最大的语法特点,就是调用遍历器的next方法,返回的是一个Promise对象。	
+
 ### await
+*	await命令后面是一个Promise对象。如果不是,会被转成一个立即resolve的Promise对象。
+*	只要一个await语句后面的 Promise 变为reject，那么整个async函数都会中断执行。
+	```
+	async function f() {
+		await Promise.reject('出错了');
+		await Promise.resolve('hello world'); 				//不会执行		   		
+	}
+	```
+*	如果await后面的异步操作出错,那么等同于async函数返回的Promise对象被reject
+*	注意事项
+	```
+	第一点，前面已经说过，await命令后面的Promise对象，运行结果可能是rejected，所以最好把await命令放在try...catch代码块中。
+	async function myFunction() {
+	  try {
+	    await somethingThatReturnsAPromise();
+	  } catch (err) {							//处理await失败时候的情况
+	    console.log(err);
+	  }
+	}
+	// 另一种写法
+	async function myFunction() {
+	  await somethingThatReturnsAPromise()      
+	  .catch(function (err) {					//使用then,catch捕获错误
+	    console.log(err);
+	  });
+	}
+	第二点，多个await命令后面的异步操作,如果不存在继发关系,最好让它们同时触发。
+	let foo = await getFoo();
+	let bar = await getBar();
+	改写成：
+	let [foo, bar] = await Promise.all([getFoo(), getBar()]);
+	第三点(很重要),await命令只能用在async函数之中,如果用在普通函数,就会报错。
+	```	
 
 ### Decorator(装饰器)
+	修饰器是一个对类进行处理的函数,用来修改类的行为	
+	@bar(true)    					//用bar装饰器装饰foo类,并传入一个参数
+	class foo {
+	  //doSomething();
+	}
+	function bar(bool) {    		//定义一个装饰器bar,foo类会被作为target的值传入进函数中
+	   return function(){
+	   	target.readOnly = bool;
+	   }
+	}
+	console.log(foo.readOnly);               // true
+
+*	修饰器不仅可以修饰类,还可以修饰类的属性和方法
+	```
+	class Person {
+	  @readonly
+	  name() { return `${this.first} ${this.last}` }
+	}
+	function readonly(target, name, descriptor){
+	  // descriptor对象原来的值如下:       数据属性描述符：value,enumerable,configurable,writable
+	  // {
+	  //   value: specifiedFunction,
+	  //   enumerable: false,
+	  //   configurable: true,
+	  //   writable: true
+	  // };
+	  descriptor.writable = false;
+	  return descriptor;
+	}
+	readonly(Person.prototype, 'name', descriptor);//意思是修改Person类的原型的name属性的属性描述符
+	```
 
 ### Class
 	static		//只能被类所使用,不能被实例所继承
-	private 	//只能被当前类所使用,子类和对象均不可使用
+	public      //公开所有属性和方法	
 	protected	//只能被类和子类使用
+*	特别注意：javascript中不存在privarte私有属性修饰符,但是typescript中有
+	```
+	private 	//只能被当前类所使用,子类和对象均不可使用
+	```
+*	Class静态方法：
+	```
+	如果在一个方法前,加上static关键字,就表示该方法不会被实例继承,而是直接通过类来调用。
+	```
+*	constructor方法是类的默认方法,通过new命令生成对象实例时,自动调用该方法。一个类必须有constructor方法,如果没有显式定义,一个空的constructor方法会被默认添加。
+* 	类中不存在变量提升
+*	Class内部调用new.target,返回当前Class。需要注意的是,子类继承父类时,new.target会返回子类。
+	```
+	利用这个特点,可以写出不能独立使用、必须继承后才能使用的类。
+	class Shape {
+	  constructor() {
+	    if (new.target === Shape) {
+	      throw new Error('本类不能实例化');
+	    }
+	  }
+	}
+	```
 
 ### ECMAScript Modules
 
