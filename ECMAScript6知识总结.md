@@ -1,11 +1,9 @@
 # 	ECMA2015(ES6)语法
 	参考链接:http://es6.ruanyifeng.com
 
-###	\_proto_属性
-	```	
+###	\_proto_属性	
 	一个实例对象的属性,指向创建这个实例的构造函数的原型;
-	obj.constructor.prototype === obj._proto_ ;
-	```
+	obj.constructor.prototype === obj._proto_ ;	
 
 ### 原始数据类型Symbol(第七种数据类型)
 	ES6 引入了一种新的原始数据类型Symbol,表示独一无二的值;
@@ -62,16 +60,19 @@
 ###  结构赋值
 
 ###  ...展开剩余运算符
-	将数组展开，分别获取数组的每个元素
+*	将数组展开，分别获取数组的每个元素
+	```
 	var a=[1,2];
 	var b=[3,4];
 	var c=[5,6];
 	var d=[...a,...b,...c];
 	console.log(d);   //[1,2,3,4,5,6]
-	将字符串展开
+	```
+*	将字符串展开
+	```
 	var d=[...'hello'];
 	console.log(d);    //['h','e','l','l','o']
-
+	```
 
 ### find方法:找出第一个符合条件的数组成员
 	arr.find(function(value,index,arr){			//vlaue为每个元素,idnex为当前索引,arr为整个数组
@@ -79,7 +80,7 @@
 	});
 	方法示例:
 	[1,2,-5,10].find(function(value){
-			return value<0; //-5
+			return value<0; 					//-5
 	});
 
 ### filter方法:过滤
@@ -178,24 +179,34 @@
 	[...map] 									// [[1,'one'], [2, 'two'], [3, 'three']]
 	```
 
-* 	Map与数组,对象,JSON之间的相互转化
-	```
+* 	Map与数组,对象,JSON之间的相互转化	
 1.  Map转数组
+	```
 	const myMap = new Map([[name,'yfx'],['age':25]]);
 	[...myMap];
+	```
 2.  数组转Map
+	```
 	new Map([[name,'yfx'],['age':25]]);
+	```
 3.  Map转对象
+	```
 	通过遍历Map对象成员的键值对,obj[key] = value实现
+	```
 4.  对象转Map
+	```
 	通过遍历对象的key,map.set(key,obj[k])实现
+	```
 5.  Map转JSON	
+	```
 	strMapToObj(Map对象);  //把Map对象转化为JSON对象
 	JSON.stringify()       //再把JSON对象转化为JSON字符串
-6.  jSON转Map	
-	new Map(JSON对象);  通过JSON.parse将json字符串转化为JSON对象后在作为Map参数传入
 	```
-
+6.  jSON转Map
+	```	
+	new Map(JSON对象);  通过JSON.parse将json字符串转化为JSON对象后在作为Map参数传入	
+	```
+	
 ### Proxy可以理解为在目标对象之前架设一层"拦截",外界对该对象的访问,都必须先通过这层拦截,因此提供了一种机制,可以对外界的访问进行过滤和改写	
 	new Proxy(targer,handler)  				//target参数表示所要拦截的目标对象,handler参数也是一个对象，用来定制拦截行为。
 
