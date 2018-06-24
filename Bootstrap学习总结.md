@@ -30,6 +30,7 @@
 	<span class="fa fa-caret-right"></span>
 
 ### jumbotron(超大屏幕)
+	<div class="jumbotron"></div>
 	为了获得占用全部宽度且不带圆角的超大屏幕,应该在所有的.container样式类外面使用.jumbotron样式类
 
 ### thumbnai(缩略图)
@@ -68,6 +69,14 @@
 |®|注册商标|&reg;|
 |™|商标|&trade;|
 
+*	屏幕阅读器
+	```
+	aria-hidden="true",只具有一个图标的元素,不包含任何文本内容,这样就能让使用辅助设备的用户知道其作用了	,意思由图标来表现来
+	<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>  //向右滑动图标
+	sr-only,只在屏幕阅读器上有效,帮助视觉有障碍的人士理解
+	<span class="sr-only">Next</span>
+	```
+	
 ### 导航栏(navigation)
 * 	菜单栏样式
 	```
@@ -129,4 +138,55 @@
 			</div>
 		</div>		
 	</nav>
+	```
+
+### carousel(轮播图、旋转木马、幻灯片)
+	通过data属性:使用data属性可以很容易控制轮播(Carousel)的位置。
+	属性data-slide接受关键字prev或next,用来改变幻灯片相对于当前位置的位置。
+	使用data-slide-to来向轮播传递一个原始滑动索引,data-slide-to="2"将把滑块移动到一个特定的索引,索引从0开始计数。
+	data-ride="carousel"属性用于标记轮播在页面加载时就开始动画播放。
+
+*	html模板代码：
 	```	
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+	<script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>	
+	<div class="carousel slide" id="myCarousel">
+		<ol class="carousel-indicators">
+			<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+			<li data-target="#myCarousel" data-slide-to="1" ></li>
+			<li data-target="#myCarousel" data-slide-to="2" ></li>
+		</ol>
+		<div class="carousel-inner">
+			<div class="item active">
+				<img src="http://placehold.it/900x300" alt="first slide">
+				<div class="carousel-caption">标题1</div>
+			</div>
+			<div class="item">
+				<img src="http://placehold.it/900x300" alt="second slide">
+				<div class="carousel-caption">标题2</div>
+			</div>
+			<div class="item">
+				<img src="http://placehold.it/900x300" alt="third slide">
+				<div class="carousel-caption">标题3</div>
+			</div>
+		</div>
+		<a href="#myCarousel" class="carousel-control left" date-slide="prev">
+			<span class="glyphicon glyphicon-chevron-left"></span>
+		</a>
+		<a href="#myCarousel" class="carousel-control right" date-slide="next">
+			<span class="glyphicon glyphicon-chevron-right"></span>
+		</a>
+	</div>
+	```
+
+### pagination(分页)
+	<ul class="pagination pagination-lg">
+	    <li><a href="#">&laquo;</a></li>
+	    <li class="active"><a href="#">1</a></li>
+	    <li class="disabled"><a href="#">2</a></li>
+	    <li><a href="#">3</a></li>
+	    <li><a href="#">4</a></li>
+	    <li><a href="#">5</a></li>
+	    <li><a href="#">&raquo;</a></li>
+	</ul>
