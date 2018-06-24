@@ -84,7 +84,10 @@
 ###	响应式导航栏:在移动端收起成一个菜单按钮
 *	原理解析：
 	```
-	为了给导航栏添加响应式特性,折叠的内容必须包裹在带有.collapse、.navbar-collapse的<div>中。折叠起来的导航栏实际上是一个带有.navbar-toggle及两个data- 元素的按钮。第一个是data-toggle,用于告诉JavaScript需要对按钮做什么,第二个是data-target,指示要切换到哪一个元素。三个带有.icon-bar的<span>创建所谓的汉堡按钮。这些会切换为.nav-collapse<div>中的元素。
+	为了给导航栏添加响应式特性,折叠的内容必须包裹在带有.collapse、.navbar-collapse的<div>中。
+	折叠起来的导航栏实际上是一个带有.navbar-toggle及两个data- 元素的按钮。
+	第一个是data-toggle,用于告诉JavaScript需要对按钮做什么,第二个是data-target,指示要切换到哪一个元素。
+	三个带有.icon-bar的<span>创建所谓的汉堡按钮。这些会切换为.nav-collapse<div>中的元素。
 	```
 *	折叠起来的导航栏一般带navbar-toggle类和data-toggle(操作方式),date-target(被操作元素)
 	```
