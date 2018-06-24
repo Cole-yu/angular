@@ -86,10 +86,12 @@
         "node_modules/bootstrap/dist/js/bootstrap.js"
 	]
 	```
-3.  安装类型描述文件，让Typescript代码能识别Javascript文件   jquery.d.ts,bootstrap.d.ts
+3.  安装类型描述文件
+	```
+	让Typescript代码能识别Javascript文件   jquery.d.ts,bootstrap.d.ts
 	npm install @types/jquery --save-dev
 	npm install @types/bootstrap --save-dev
-
+	```
 
 ### 修改angualr项目的端口号
 修改配置文件node_modules/angular-cli/lib/config/schema.json 
@@ -187,13 +189,11 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 官网链接：[bootstrap]
 
 ### 声明一个具有泛型的数组---*数据类型*
-```
 	public stars:boolean[]  			//stars是一个布尔类型的数组
 	public products:product[]   		//products是一个product类型的数组
 	private products:Array<product>     //等价于private products:product[]
 	public foo:Array<any>				//任意类型的数组，public foo:any[]
 	let bar:Array<AnyObject> = []
-```
 
 ### 路由
 * 	基本概念
@@ -245,9 +245,10 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	<a [routerLink]="[{outlets:{aux:null}}]">结束聊天</a>				    //辅助路由为空，不显示任何组件
 	```
 * 	路由守卫
+	```
 	CanActivate,CanDeactivate,Resolve本质上均为接口,需要定义类来实现这些接口(某个类实现接口，必须编写该接口拥有的所有方法,然后再在模块中创建对象来使用，接口->类->实例)
+	```
 1.  CanActivate[处理导航到某路由的情况]
-
 2.  CanDeactivate[处理离开当前路由的情况]
 	```
 	CanDeactivate有一个泛型,指定需要保护的组件类型
@@ -277,19 +278,15 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	```
 
 
-#### 在路由时传递数据的方式
-
+### 在路由时传递数据的方式
 1.	在查询参数中传递数据
-
 	```
     /product?id=1&name=yfx   =>  ActivatedRoute.queryParams[id]，从查询参数中获取数据
 	```
-
 2.  在路由路径中传递数据
 	```
     {path:/product/:id}   => /product/1     =>  ActivatedRoute.Params[id],从url中获取数据
 	```
-
 3.  在路由配置中传递数据
 	```
 	{path:/product,component:ProductComponent,data:[{isProd:true}]}    => ActivatedRoute.data[0][isProd]
@@ -350,7 +347,7 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	providers:[{
 		provider:ProductService,
 		useFactory:()=>{
-			let logger=new LoggerService;			
+			let logger=new LoggerService;
 			if(true){
 				return new ProductService(logger);
 			}
@@ -416,9 +413,9 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	.filter((e)=>e%2==0)
 	.map(e=>e*e)
 	.subscribe(
-		>e=>console.log(e),			//观察者知道如何处理Observable发送的值
-		>err=>console.log(err),
-		>()=>console.log("流结束了")
+		e=>console.log(e),			//观察者知道如何处理Observable发送的值
+		err=>console.log(err),
+		()=>console.log("流结束了")
 	);
 	```
 3.  订阅Subscription	,表示一个可观察对象Id，用于取消注册,订阅
@@ -474,7 +471,6 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	@ViewChild('child1')
 	child1:ChildComponent;
 	```
-
 
 ### 生命周期钩子
 1.	constructor
@@ -552,11 +548,32 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 		<div>确认密码:<input type="password" ngModel name="pconfirm"></div>
 	</div>
 	```
+*   通过指令进行数据校验,required,minlength
+	```
+	<div class="col-md-10">
+	    <input type="text" class="form-control" required minlength="6" id="username" ngModel name="username">
+	    <span *ngIf="register.form.hasError('required','username')" class="help-block">必填项</span>
+	    <span *ngIf="register.form.hasError('minlength','username')">长度至少为6位</span>
+	</div>
+	```
+* 	如果需要在控制器中进行处理,需要在模板中向控制器传参数
+	```
+	<button type="submit" class="btn btn-primary col-md-12" (click)="onSubmit(register.value)">提交</button>//register是表单的模板引用变量
+	```
 *	响应式表单(ReactiveFormsModule模块)：适用于复杂表单,业务逻辑灵活
-三个类名,在控制器中使用，用于实例化一个对象
+	```
+	在根模块app.module.ts中引入ReactiveFormsModule
+	import {ReactiveFormsModule} from '@angular/forms';
+	在@NgModule的imports字段中引入
+		improts:[
+			ReactiveFormsModule,
+			...
+		]
+	```
+*	三个类名,在控制器中使用,用于实例化一个对象	
 1.	FormControl类
 		```
-		username:FormControl=new FormControl("yfx");
+		username:FormControl=new FormControl();
 		```
 
 2.	FormGroup类
@@ -574,7 +591,6 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 			new FormControl("b@b.com"),
 		]);
 		```
-
 ***
 
 | 类名 | 指令 |   |
@@ -583,14 +599,15 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 |FormControl|formControl|formControlName|
 |FormArrar|             |formArrayName|
 
-	```
+*	HTML模板代码
+	```	
 	formGroup,formGroupName,formControl,formControlName,formArrayName是在html模板中使用
 	formGroup,formControl则使用的是属性绑定语法
 	<form [formGroup]="formModel">
 		<input type="text" formControlName="username">
 	</form>
 	在formGroup范围内，才能使用formControlName,formGroupName,formArrayName,不能使用formControl属性绑定语法
-	其中formGroupName,formControlName,formArrayName用于连接html模板与控制器中的表单实例对象,值为字符串;不需要使用属性绑定语法
+	其中formGroupName,formControlName,formArrayName用于连接html模板与控制器中的表单实例对象,值为字符串;不需要使用属性绑定语法	
 	<div formGroupName="dateRange>
 		<input type="date" formControlName="from">
 		<input type="date" formControlName="to">
@@ -602,6 +619,22 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	</ul>
 	```
 
+*	Angular基本方式实现
+	```
+	public formModel:FormGroup;			  //定义一个FormGroup类的对象
+	constructor() {
+		this.formModel=new FormGroup({    //实例化一个表单对象,在FormGroup中的参数是表单的结构
+		    username:new FormControl(),
+		    passwordGroup:new FormGroup({
+		          password:new FormControl(),
+		          pConfig:new FormControl()
+		    }),
+		    email:new FormControl()
+		});
+	}
+	```
+
+* 	使用FormBuilder模块实现一个表单结构
 	```
 		控制器中实例化一个响应式表单模型
 		constructor(fb:FormBuilder){
@@ -616,21 +649,53 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 		}
 	```	
 
-*	校验器(validator)
+##	校验器(validator)
+*	编写自定义校验器
 	required,minLength,maxLength,pattern,定义在angular的Validators类中
 	```
 	// 手机号校验器
-	export function mobileValidator(control:FormControl):any {  //传入的参数为要校验的表单对象
-	  const myreg=/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;// 正则表达式
+	export function mobileValidator(control:FormControl):any {  			//传入的参数为要校验的表单对象
+	  const myreg=/^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;		// 正则表达式
 	  const isValid=myreg.test(control.value);
 	  console.log('mobile的校验结果是:'+isValid);
-	  return isValid?null:{mobile:true};	//校验通过时返回空，错误时返回一个错误对象
+	  return isValid?null:{mobile:true};	//校验通过时返回空,错误时返回一个错误对象
+	}
+	//  密码确认校验
+	export function equalValidator(group:passwordGroup){
+		const password=group.get('password') as FormControl;
+		const pConfig=group.get('pConfig') as FormControl;
+		let equalResult:boolean=(password.calue === pConfig.value);
+		return equalResult?null:{equal:{desc:'两次密码结果不一致'}}
 	}
 	```
 	异步校验器，返回一个Observable对象
 	```
 	rerurn Observable.of(valid?null:{mobile:true).delay(5000);//校验通过返回一个空对象
 	```
+
+###	使用校验器
+*	在html模板上获取校验结果:
+	```
+	<span *ngIf="formModel.get('passwordGroup').valid&&formModel.get('email').touched"></span>
+	```
+*	在控制器上配置校验器:
+1.	引入自定义校验器模块
+	```
+	import {equalValidator} from '../../../validator/validator';
+	```
+2.  在表单结构模型上添加校验器
+	```
+	passwordGroup:fb.group(
+		{
+            password:[''],
+            pConfig:['']
+        },
+        {
+        	validator: equalValidator
+        }
+    )	
+	```
+
 *	表单状态字段属性
 |||
 |:---:|:---:|
@@ -638,36 +703,38 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 |pristine|dirty|	
 |pending||
 
-	在html模板中使用
+*	在html模板中使用
+	```
 	formModel.get('username').touched;
-	hasError('','[]')语法解析：第一个为校验器(函数名称)，第二个为数组对象,每个值都是需要校验的对象
-	formModel.haserror('positiveNumber','[price]');//判断输入的价格字段是否为正数
-
+	hasError('','[]')     //语法解析：第一个为校验器(函数名称)，第二个为数组对象,每个值都是需要校验的对象
+	formModel.haserror('positiveNumber','[price]');					//判断输入的价格字段是否为正数
+	```
 *	响应式表单校验(通过编写校验器,实例化表单对象模型来实现)
 *	模板式表单校验(通过编写自定义指令来实现)
 
-### 指令(directive)
-	指令是一个没有模板的组件
+### 指令(directive)	
+	指令是一个没有模板的组件  //ng g directive 指令名称
 	@Directive({
 		selector:'[mobile]'  //选择器中带有[],所以指令是作为html元素的属性来使用,组件是作为html标签来使用(选择器上没有一对[])
-		providers:[{provider:NG_VALIDATORS,useValue:mobileValidator,multi:true}] //useValue将指令与自定义的校验器mobileValidator连接到一起,包装成mobile指令
+		providers:[{provider:NG_VALIDATORS,useValue:mobileValidator,multi:true}]  //useValue将指令与自定义的校验器mobileValidator连接到一起,包装成mobile指令
 	})
 	export class MobileValidator{
 		constructor(){
-
 		}
 	}
 
 ### 与服务器通讯
 *	创建web服务器(node.js,express框架)
+	```
 	npm init -y			//生成默认配置文件
 	npm i @types/node --save   //安装node类型定义文件,使得可以使用typescript来进行开发,从javascript开发=>typescript开发
-
 	express框架,处理Restful请求
-
+	```
+*	当文件发生改变时,自动重启服务
+	```
 	npm install -g nodemon		//代码发生改变时，自动更新并重启
 	nodemon server/auction_server.js   //执行程序
-
+	```
 *	http通讯,来自HttpModule模块,在subscribe被调用时才发送http请求
 1.	异步执行http请求的实现方式(callback回调,promise承诺,Rxjs响应式编程)	
 2.	http.d.ts（http源代码实现解析）
