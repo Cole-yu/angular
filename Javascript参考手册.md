@@ -27,7 +27,7 @@
 	var arr=[1,2,3,4,5];
 	arr.indexOf(3);				// 2	
 	```
-*   typeOf() 方法返回一个为字符串的结果,对象或原始值
+*   typeOf() 方法返回一个为字符串的结果,对象或原始值,返回值是一个字符串
 	```
 	undefined,boolean,number,string,function,object
 	typeOf(undefined)  //undefined
@@ -38,7 +38,7 @@
 	typeOf(任何函数对象)//function
 	typeOf(任何对象)    //object
 	```
-*   split() 方法用于把一个字符串分割成字符串数组。
+*   split() 方法用于把一个字符串分割成字符串数组,结果为一个数组
 	```	
 	var str="How are you doing today?"
 	str.split("")	// H,o,w, ,a,r,e, ,y,o,u, ,d,o,i,n,g, ,t,o,d,a,y,?		
@@ -127,6 +127,13 @@
 	fontsize() //使用指定的尺寸来显示字符串。
 	fontcolor()//使用指定的颜色来显示字符串。
 	sub()      //把字符串显示为下标。(sub:下标)
+	charAt()   //返回字符串中指定索引位置处的字符
+	```
+* 	charAt()  //获取字符串对象中指定位置的字符
+	```
+	var str='abcdefg';
+	str.charAt(0);	//'a'
+	str.charAt(2);	//'c'
 	```
 *	substr()
 	```
@@ -364,3 +371,174 @@
 	var str=" a bc 123 ";
 	var value=str.replace(/ /gi,'');
 	console.log(value);
+
+### 闭包
+* 闭包最神奇的地方就是能在一个函数外访问该函数中的局部变量
+* 涉及的概念:函数对象,活动对象,作用域链,执行上下文对象(执行环境),垃圾回收机制
+* 闭包函数：
+	```
+  在全局函数作用域下声明一个闭包的外包函数		
+	<script>
+		function wrapper(){	  	
+			var val=1;	  					// 外包函数的局部变量
+			return function(){	  		// 返回一个内嵌的匿名函数对象
+				return ++val;			// 匿名函数内部访问其外包函数的局部变量
+			}
+		}
+		// 外包函数执行完毕后,返回一个匿名函数对象;该匿名函数被全局函数下的result变量引用,形成闭包
+		var result=wrapper();     		// result:function(){ return ++val; }
+		// 在全局函数作用域下,通过执行result(引用地址指向闭包函数)来访问外包函数下的局部变量
+		console.log(result());
+  	</script>
+	```
+*	过程解析:
+  	1. 在外包函数wrapper()被调用时，匿名函数对象作为外包函数wrapper()的返回值，被外包函数wrapper()的父级函数作用域（对应script下的顶级函数作用域）的变量result所引用，这样一来，内嵌的匿名函数对象不会被回收，此时闭包生成（对应函数closureRef）。
+  	2. 正因为这个闭包函数对象不被回收，所以其内部scope属性维护的作用域链也不会被回收，也意味着这条作用域链上的所有活动对象都得到了保留。
+  	3. 而这条作用域链上的头节点，正是其外包函数wrapper()对应的活动对象（该活动对象包含了val变量及其值）。
+  	4. 那么在闭包函数result被执行时，函数对象的作用域链会拷贝给其对应的执行上下文对象，也就是说闭包函数可以在执行上下文对象的作用域链上找到其外包函数对应的活动对象，并从该活动对象中找到val变量
+* 闭包生成的原理解析:
+	1. 	内嵌函数对象不被回收(被外包函数的父级或更高级作用域变量引用,闭包生成)
+	2.	内嵌函数对象的作用域链不被回收
+	3. 	作用域链上的活动对象结点不被回收
+	4. 	内嵌函数对象的父级作用域及更高层作用域对应的上下文数据环境均得到保留。
+
+###	函数解析过程
+	当函数被解析时,会相应的创建一个函数对象,函数对象中有一个scope属性,初始值为父级作用域的执行上下文对象的scope属性值
+
+### 函数执行过程
+1.  当一个函数对象被执行时,会为该函数对象创建一个活动对象,该函数对象包含所有函数执行所需要的内容。
+	内容包括：
+	* 形式参数
+	* 函数声明
+	* 传入参数
+	* 局部变量
+	```
+	在浏览器中，全局活动对象为window对象,并且也是作用域链的终点,被称为全局对象(Global Object);
+	特别地,在web浏览器,JS全局作用域的执行上下文对象,其作用域链上仅有一个活动对象结点,即window对象。
+	```
+2.	* 在函数对象被执行时,也会创建一个执行上下文对象,执行上下文对象中也有一个scope属性,初始值为该函数对象中的scope属性值,该scope值指向同一个作用域链;
+	* 在scope属性初始化完毕后,会把该活动对象插入到作用域顶端。正因为维护者这个作用域链,这个执行上下文对象包含着当前函数作用域所需要的所有环境。
+
+
+### 遍历	
+	forEach()  				// 不能用来遍历字符串
+	for(let index in str)	// str[index]
+	for(let val of arr)
+
+###	sort()方法
+	sort()方法 如果不带参数,则会对数组中的元素按照字母顺序(本质上是按照"字符编码"的顺序)进行升序排列
+	sort(sortFunction),sort方法可以接收一个排序规则函数,实现自定义的排序规则
+1.	如果希望数组内的元素以升序方式进行排列;	排序规则函数应该具有两个参数a和b,其返回值如下:
+	* 若 a 小于 b,在排序后的数组中 a 应该出现在 b 之前,则返回一个小于 0 的值;
+	* 若 a 等于 b,则返回 0;
+	* 若 a 大于 b,在排序后的数组中 a 应该出现在 b 之前,则返回一个大于 0 的值;
+	* 代码实现:
+	```
+	var arr=[1,25,40,255,10,100,];
+	function sortNumber(a,b){
+		return a-b;
+	}
+	var value=arr.sort(sortNumber);
+	console.log(value);
+	```
+2.  把对象数组按某个关键字段进行排序
+	```
+	var employees=[];
+	employees[0]={name:"George", age:32, retiredate:"March 12, 2014"}
+	employees[1]={name:"Edward", age:17, retiredate:"June 2, 2023"}
+	employees[2]={name:"Christine", age:58, retiredate:"December 20, 2036"}
+	employees[3]={name:"Sarah", age:62, retiredate:"April 30, 2020"}
+	//by函数接受一个成员名字符串(键值)做为参数
+	//并返回一个可以用来对包含该成员的对象数组进行排序的比较函数
+	var by = function(name){
+		return function(o, p){
+		   var a, b;
+		   if (typeof o === "object" && typeof p === "object" && o && p) {
+		     a = o[name];
+		     b = p[name];
+		     if (a === b) {
+		       return 0;
+		     }
+		     if (typeof a === typeof b) {
+		       return a < b ? -1 : 1;
+		     }
+		     return typeof a < typeof b ? -1 : 1;
+		   }
+		   else {
+		     throw ("error");
+		   }
+		}
+	}
+	employees.sort(by("age"));
+	```
+3.  把对象数组按某个关键字段进行排序,关键字段相等时,利用辅助字段进行排序
+	```
+	var employees=[];
+	employees[0]={name:"George", age:32, retiredate:"March 12, 2014"}
+	employees[1]={name:"Edward", age:17, retiredate:"June 2, 2023"}
+	employees[2]={name:"Christine", age:58, retiredate:"December 20, 2036"}
+	employees[3]={name:"Sarah", age:62, retiredate:"April 30, 2020"}	
+	//by函数接受一个成员名字符串和一个可选的次要比较函数做为参数
+	//并返回一个可以用来包含该成员的对象数组进行排序的比较函数
+	//当o[age] 和 p[age] 相等时，次要比较函数被用来决出高下
+	var by = function(name,minor){
+	 return function(o,p){
+	   var a,b;
+	   if(o && p && typeof o === 'object' && typeof p ==='object'){
+	     a = o[name];
+	     b = p[name];
+	     if(a === b){
+	       return typeof minor === 'function' ? minor(o,p):0;
+	     }
+	     if(typeof a === typeof b){
+	       return a < b ? -1:1;
+	     }
+	     return typeof a < typeof b ? -1 : 1;
+	   }else{
+	     thro("error");
+	   }
+	 }
+	}
+	employees.sort(by('age',by('name')));
+	```
+
+### 数组反转排序
+	```
+	var str="abcdefg";
+	var arr=[];
+	for(let val of str){
+		arr.push(val);
+	}
+	arr=arr.reverse();				//数组反转
+	var newString = arr.join('');
+	console.log(newString);
+	```
+
+### 字符串反转
+1.	方法一:将字符串分割成单个字符的数组,利用数组的erverse方法,再拼接成字符串
+	```
+	var str='abcdefg';
+	var result=str.split('').reverse().join('');
+	console.log(result);
+	```
+2.  方法二:利用charAt获取指定字符拼接成新的字符串
+	```
+	var str='abcdefg';
+	var len=str.length;
+	var result='';
+	for(var i=0;i<len;i++){
+		result=str.charAt(i)+result;
+	}
+	console.log(result);
+	```
+3. 	方法三：利用遍历字符串的方式,获取拆分成单个字符的数组,利用数组的reverse方法在拼接成字符串
+	```
+	var str="abcdefg";
+	var arr=[];
+	for(let val of str){
+		arr.push(val);
+	}
+	arr=arr.reverse();				//数组反转
+	var newString = arr.join('');
+	console.log(newString);
+	```

@@ -834,5 +834,171 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 
 ### 构建与部署、多环境支撑（开发,测试,生产）
 
+### ng-if,ng-show的区别
+	ng-if通过操作dom节点,实现增加和删除页面元素
+	ng-show通过css样式的display实现显示/隐藏
 
 
+# 单元测试
+### 文件说明
+*   e2e/protractor.conf.js文件是给Protractor使用的端到端测试配置文件,当运行 ng e2e 的时候会用到它。
+*	jasmine是用来编写Javascript测试的框架,它不依赖于其他任何框架。
+*	Karma是测试的执行者,使用Karma.conf.js配置文件来设置启动文件、报告、测试框架、浏览器等。
+*	src/karma.conf.js是karma的单元测试配置文件。
+	```
+	// Karma configuration file, see link for more information
+	// https://karma-runner.github.io/1.0/config/configuration-file.html
+	module.exports = function (config) {
+	  config.set({
+	    basePath: '',
+	    frameworks: ['jasmine', '@angular-devkit/build-angular'],   //jasmine被设定为测试框架的地方
+	    plugins: [
+	      require('karma-jasmine'),
+	      require('karma-chrome-launcher'),
+	      require('karma-jasmine-html-reporter'),
+	      require('karma-coverage-istanbul-reporter'),
+	      require('@angular-devkit/build-angular/plugins/karma')
+	    ],
+	    client: {
+	      clearContext: false // leave Jasmine Spec Runner output visible in browser
+	    },
+	    coverageIstanbulReporter: {
+	      dir: require('path').join(__dirname, '../coverage'),
+	      reports: ['html', 'lcovonly'],
+	      fixWebpackSourcePaths: true
+	    },
+	    reporters: ['progress', 'kjhtml'], 						//负责将测试结果告知给开发者。通常是将结果打印到控制台上progress,(在网页中显示结果kjhtml),或者存入文件中
+	    port: 9876,
+	    colors: true,
+	    logLevel: config.LOG_INFO,
+	    autoWatch: true,										//如果设置为true，则测试将以Watch模式运行
+	    browsers: ['Chrome'],									//设置测试应该运行的浏览器的位置
+	    singleRun: false
+	  });
+	};
+	```
+*	src/test.ts是单元测试的主要入口点
+	```
+	import 'zone.js/dist/zone-testing';
+	import { getTestBed } from '@angular/core/testing';
+	import { BrowserDynamicTestingModule,platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
+	declare const require: any;
+	// First, initialize the Angular testing environment.
+	getTestBed().initTestEnvironment(
+	  BrowserDynamicTestingModule,
+	  platformBrowserDynamicTesting()
+	);
+	// Then we find all the tests.
+	const context = require.context('./', true, /\.spec\.ts$/);    				//获取任何.spec.ts结尾的代码文件内容
+	// And load the modules.
+	context.keys().map(context);
+	```
+* 	ng test的常用参数
+	```
+	- –code-coverage -cc 代码覆盖率报告, 默认这个是不开启的, 因为生成报告的速度还是比较慢的. 
+	- –colors 输出结果使用各种颜色 默认开启 
+	- –single-run -sr 执行测试, 但是不检测文件变化 默认不开启 
+	- –progress 把测试的过程输出到控制台 默认开启 
+	- –sourcemaps -sm 生成sourcemaps 默认开启 
+	- –watch -w 运行测试一次, 并且检测变化 默认开启
+	```
+*	测试用例代码示例解析
+	```
+	import { TestBed, async } from '@angular/core/testing';
+	import { RouterTestingModule } from '@angular/router/testing';
+	import { AppComponent } from './app.component';
+	describe('AppComponent', () => {
+	  beforeEach(async(() => {
+	    TestBed.configureTestingModule({
+	      imports: [
+	        RouterTestingModule
+	      ],
+	      declarations: [
+	        AppComponent
+	      ],
+	    }).compileComponents();
+	  }));
+	  it('should create the app', async(() => {
+	    const fixture = TestBed.createComponent(AppComponent);
+	    const app = fixture.debugElement.componentInstance;
+	    expect(app).toBeTruthy();
+	  }));
+	  it(`should have as title 'app'`, async(() => {
+	    const fixture = TestBed.createComponent(AppComponent);
+	    const app = fixture.debugElement.componentInstance;
+	    expect(app.text).toEqual('Angular Unit Testing');
+	  }));
+	  it('should render title in a h1 tag', async(() => {
+	    const fixture = TestBed.createComponent(AppComponent);
+	    fixture.detectChanges();
+	    const compiled = fixture.debugElement.nativeElement;
+	    expect(compiled.querySelector('h1').textContent).toContain('Welcome to Angular Unit Testing!');
+	  }));
+	});	
+	1. 第一个为异步测试app是否true或false：
+		如果app是0;两次取反当然是false
+		如果app是null;两次取反是false
+		如果app是undefined;两次取法是false
+		其余的,两次取反是true;
+	2. 第二个为异步测试app是否有text属性,并且判断值是否和预期相同
+	3. 第三个为异步测试app是否在h1标签中的显示值为预期值
+	```
+* 	测试代码编写注意事项
+	1. 导入测试文件的所有依赖项 
+	* 这里要注意，你在组件内使用的依赖，这里面同样需要导入，否则会无法运行。	
+	2. 使用describe开始我们的测试
+	* describe是一个函数,Jasmine 就是使用describe全局函数来测试的。
+	* describe接收两个参数,第一个为参数,第二个为方法
+		```
+		declare function describe(description: string, specDefinitions: () => void): void;
+		```
+	3. jasmine 就是使用 it 全局函数来表示,同样也是接收字符串和方法两个参数。一个it函数代表一个测试.
+	4. 断言,使用 expect 全局函数来表示，只接收一个代表要测试的实际值，并且需要与匹配器(Matcher)代表期望值。
+		* Jasmine 提供非常丰富的API,一些常用的Matchers:
+			```
+			toBe() 等同 ===
+			toNotBe() 等同 !==
+			toBeDefined() 等同 !== undefined
+			toBeUndefined() 等同 === undefined
+			toBeNull() 等同 === null
+			toBeTruthy() 等同 !!obj
+			toBeFalsy() 等同 !obj
+			toBeLessThan() 等同 <
+			toBeGreaterThan() 等同 >
+			toEqual() 相当于 ==
+			toNotEqual() 相当于 !=
+			toContain() 相当于 indexOf
+			toBeCloseTo() 数值比较时定义精度，先四舍五入后再比较。
+			toHaveBeenCalled() 检查function是否被调用过
+			toHaveBeenCalledWith() 检查传入参数是否被作为参数调用过
+			toMatch() 等同 new RegExp().test()
+			toNotMatch() 等同 !new RegExp().test()
+			toThrow() 检查function是否会抛出一个错误
+			```
+
+### Mock(伪造服务)
+* 	Mock服务实例
+	```
+	第一步：编写服务的mock类	
+	class TaskMonitorStubService extends TaskMonitorService {
+    	public queryTaskList(request: ViewTaskRequest): Observable<any> {
+        	return request.code === -1 ? Observable.of(runningTaskResponse): Observable.of(finishedTashResponse)
+    	}
+	}
+	第二步：在configureTestingModule用Mock的服务替换真实的服务
+	TestBed.configureTestingModule({
+	    imports: [
+	        HttpModule,
+	        TaskMonitorModule
+	    ],
+	    Providers: [
+	        {provide: TaskMonitorService, useClass: TaskMonitorStubService}
+	    ]
+	})
+	```
+*  	刺探(spy)真实服务
+	```
+	Angular的服务都是通过注入器注入到系统中的，同样我们可以从根TestBed获取到注入服务的实例，然后结合刺探（Spy）对真实的服务的方法进行替换.
+	let taskMonitorService: TaskMonitorService = TestBe.get(TaskMonitorService);
+	spyOn(taskMonitorService, 'queryTaskList').and.returnValue(Observable.of(runningTaskResponse));
+	```

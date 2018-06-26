@@ -96,7 +96,7 @@
 ###  结构赋值
 
 ###  ...展开剩余运算符
-*	将数组展开，分别获取数组的每个元素
+*	将数组展开,分别获取数组的每个元素
 	```
 	var a=[1,2];
 	var b=[3,4];
@@ -215,7 +215,7 @@
 	[...map] 									// [[1,'one'], [2, 'two'], [3, 'three']]
 	```
 
-* 	Map与数组,对象,JSON之间的相互转化	
+* 	Map与数组,对象,JSON之间的相互转化
 1.  Map转数组
 	```
 	const myMap = new Map([[name,'yfx'],['age':25]]);
@@ -233,7 +233,7 @@
 	```
 	通过遍历对象的key,map.set(key,obj[k])实现
 	```
-5.  Map转JSON	
+5.  Map转JSON
 	```
 	strMapToObj(Map对象);  //把Map对象转化为JSON对象
 	JSON.stringify()       //再把JSON对象转化为JSON字符串
@@ -337,7 +337,7 @@
 	then方法可以接受两个回调函数作为参数。第一个回调函数是Promise对象的状态变为resolved时调用,第二个回调函数是Promise对象的状态变为rejected时调用。其中,第二个函数是可选的,不一定要提供。这两个函数都接受Promise对象传出的值作为参数。
 	```
 
-### Promise对象的方法:	
+### Promise对象的方法:
 *	Promise.all()方法
 	```
 	Promise.all方法用于将多个Promise实例,包装成一个新的Promise实例
@@ -365,9 +365,9 @@
 *   Promise.resolve()方法
 	```
 	将现有对象转为Promise对象
-	Promise.resolve('foo')
+	Promise.resolve('foo');
 	// 等价于
-	new Promise(resolve => resolve('foo'))
+	new Promise(resolve => resolve('foo'));
 	```
 *	Promise.reject()方法
 	```
