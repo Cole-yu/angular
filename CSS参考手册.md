@@ -10,6 +10,7 @@
 ### 水平垂直居中
 *	脱离文档流元素的居中
 1.  margin:auto法
+	```
 	#parent{
 		width:100%;
 		height:100%;
@@ -25,7 +26,9 @@
 		width:400px;
 		height:300px;
 	}
+	```
 2. 	使用负margin法
+	```
 	#parent{
 		position:relative;	
 	}
@@ -38,7 +41,9 @@
 		width:400px;
 		height:300px;
 	}
+	```
 3. 	使用display:flex布局
+	```
 	#parent{
 		display:flex;
 		justify-content:center;
@@ -48,6 +53,7 @@
 		width:400px;
 		height:300px;
 	}
+```
 
 ### 元素的层级关系从低到高(元素,before,after)
 	如果before和after样式互换,会导致before内容被after内容覆盖,因为after在before的上面。
@@ -135,6 +141,60 @@
 		docunment.getElementById('bird').getAttribute("data-animal");   //获取属性data-animal的值
 		添加data-*属性
 		docunment.getElementById('bird').dataset.color='red';			//为该元素添加了一个data-color自定义属性,且值为red
+	```
+
+### 两列式布局,左侧宽度固定,右侧宽度自适应
+1.  margin:auto法
+	```
+	html,body{
+		margin:0;
+		padding:0;
+		width:100%;
+		height:100%;
+		overflow:hidden;
+	}
+	.left{
+		width:300px;
+		height:100%;		
+	}
+	.right{
+		position:absolute;
+		left:300px;		//水平距离右侧300px;
+		right:0;
+		bottom:0;
+		top:0;
+		height:100%;
+		margin:auto;
+	}
+	```
+2.  浮动布局
+	```
+	.left{
+		float:left;
+		width:300px;
+		height:100%;
+		background-color:red;
+	}
+	.right{
+		margin-left:300px;
+		width:100%;
+		height:100%;
+		background-color:yellow;
+	}
+	```
+3.  calc计算属性
+	```
+	.left{
+		float:left;
+		width:300px;
+	}
+	.rigth{
+		float:right;
+		width:calc(100% - 300px);            注意：使用calc计算属性的时候 运算符(- +等等)两边必须有空格 
+	}
+	关键点： 
+	* 注意两个div必须一左一右浮动
+	* calc的宽度必须要减去的宽度要与固定宽度保持一致
 	```
 
 	
