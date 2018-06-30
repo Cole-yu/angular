@@ -1002,3 +1002,51 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 	let taskMonitorService: TaskMonitorService = TestBe.get(TaskMonitorService);
 	spyOn(taskMonitorService, 'queryTaskList').and.returnValue(Observable.of(runningTaskResponse));
 	```
+
+### Jasmine
+1.	declare function describe(description:string,specDefinitions:()=>void):void
+	一组测试用例
+
+2.  declare	function fdescribe(description:string,specDefinitions:()=>void):void
+	如果包含fdescription函数,Karma框架只运行fdescription测试套内的用例
+
+3.  declare function xdescribe(description:string,specDefinitions:()=>void):void
+	表示排除执行的测试套,对于未编写完成或未调试通过的用力可以采用xdescription
+
+4.  表示单个测试用例,对应对MFQ中某个具体的用例,支持description嵌套和非嵌套两种方式
+	declare function it(expectation:string,assertion?:(done:DoneFn)=>void,timeout?:number):void;
+	describe('测试显示/隐藏筛选条件',()=>{
+		it('初始隐藏筛选条件',()=>{
+			//exprect().toEqual();  断言
+		});
+	});
+
+###	组件创建
+	beforeEach(async(() => {
+	  TestBed.configureTestingModule({    //在beforeEach中调用configureTestingModule,以便在TestBed可以在运行每个测试之前都把自己重置未初始化状态
+		//导入组件的依赖
+	    imports: [
+	      TaskMonitorModule,
+	      HttpModule
+	    ],
+		//组件依赖的服务
+	    providers: [
+	      HttpClient,
+	      HttpInterceptorBackend,
+	      HttpInterceptor,
+	      {
+	        provide: Http,
+	        useFactory: httpFactory,
+	        deps: [HttpInterceptorBackend, RequestOptions]
+	      },
+	      I18nService,
+	      TranslateService
+	    ]
+	  })
+	  .compileComponents().then(()=>{   				//创建需要测试的组件,可以通过fixture获取到组件的实例
+	    fixture = TestBed.createComponent(TaskDetailComponent);
+	    component = fixture.componentInstance;
+	    component.taskInfo = taskInfo;
+	    fixture.detectChanges();
+	  });
+	}));

@@ -369,8 +369,12 @@
 
 ### 去除字符串中的空格
 	var str=" a bc 123 ";
-	var value=str.replace(/ /gi,'');
+	var value=str.replace(/ /gi,'');  //用正则表达式匹配所有空格，然后把空格替换成''
 	console.log(value);
+
+	var str=" a bc 123";
+	var arr=str.split(" ");     //按空格进行分割,返回一个数组
+	var newStr=arr.join('');	//用join方法拼接成一个字符串
 
 ### 闭包
 * 闭包最神奇的地方就是能在一个函数外访问该函数中的局部变量
@@ -542,3 +546,31 @@
 	var newString = arr.join('');
 	console.log(newString);
 	```
+
+### getPrototypeOf:返回指定对象的原型
+	Object.getPrototypeOf()
+
+### isPrototypeOf()允许你检查一个对象是否存在于另一个对象的原型链上
+	prototypeObj.isPrototypeOf(obj);
+	function Foo(){}
+	function Bar(){}
+	Bar.prototype=new Foo()
+	var bar=new Bar();
+	Foo.prototype.isPrototypeOf(bar);   //Foo构造函数的原型是否在bar这个对象的原型链上
+
+### instanceof方法
+	左操作数的对象的原型链上是否具有右操作数的构造函数的prototype属性	
+	arr=[];
+	console.log(arr instanceof Array);
+
+### isPrototypeOf与instanceof的区别
+	细细品味会发现两者的区别主要是：
+	A.isPrototypeOf(B)     //判断的是A对象是否存在于B对象的原型链之中
+	A instanceof B         //判断的是B.prototype是否存在与A的原型链之中
+	所以就有下面的结论
+		如果 A.isPrototypeOf(B) 返回true, 则B instanceof A 一定返回true　　
+
+### constructor属性
+	constructor属性返回对创建此对象的数组函数的引用，就是返回对象相对应的构造函数。
+	arr=[];
+	console.log(arr.constructor == Array);	
