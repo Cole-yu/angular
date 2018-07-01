@@ -551,6 +551,7 @@
 	Object.getPrototypeOf()
 
 ### isPrototypeOf()允许你检查一个对象是否存在于另一个对象的原型链上
+	右边实例对象的原型链上是否具有左边构造函数的原型
 	prototypeObj.isPrototypeOf(obj);
 	function Foo(){}
 	function Bar(){}
@@ -558,7 +559,7 @@
 	var bar=new Bar();
 	Foo.prototype.isPrototypeOf(bar);   //Foo构造函数的原型是否在bar这个对象的原型链上
 
-### instanceof方法
+### instanceof方法	
 	左操作数的对象的原型链上是否具有右操作数的构造函数的prototype属性	
 	arr=[];
 	console.log(arr instanceof Array);
