@@ -317,7 +317,15 @@
 	相当于一个容器,里面保存着某个未来才会结束的事件(通常是一个异步操作)的结果
 	pending(进行中),fulfilled(已成功),rejected(已失败);
 	有了Promise对象,就可以将异步操作以同步操作的流程表达出来,避免了层层嵌套的回调函数。
-	let promise=new Pormise;
+	let promise=new Pormise(function(resolve,reject){
+		//doSomething()
+		if(/*异步操作成功*/){     //在成功时将状态从"未完成"变成"成功"
+			resolve(value);
+		}
+		else{					 //在失败时将状态从"未完成"变成"失败"
+			reject(value);
+		}
+	});
 	promise.then(function(value) { 				//cb
 	    // success
 	})

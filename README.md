@@ -1021,6 +1021,44 @@ import { AccordionModule,AlertModule,ButtonsModule } from 'ngx-bootstrap';
 		});
 	});
 
+### 时间控制
+	beforeEach(function () {
+	    jasmine.Clock.useMock(); //使用Clock方法的useMock来开始时间控制,使用tick方法来推进时间
+	});
+	it('set time', function () {
+	    var str = 0;
+	    setTimeout(function () {
+	        str++;
+	    }, 100);
+	    expect(str).toEqual(0);
+	    jasmine.Clock.tick(101); //时间推进到101毫秒
+	    expect(str).toEqual(1);
+	    jasmine.Clock.tick(200); //时间推进到200毫秒
+	    expect(str).toEqual(3);
+	});
+
+### 异步与同步控制(runs与waitsFor)
+	Jasmine提供了 runs 和 waitsFor 两个方法来完成这个异步的等待。需要将waitsFor方法夹在多个runs方法中，runs方法中的语句会按顺序直接执行，然后进入waitsFor方法，如果waitsFor返回false，则继续执行waitsFor，直到返回true才执行后面的runs方法。	
+	var cb = false;
+	var ajax = {
+	    success: function () {
+	        cb = true;
+	    }
+	};
+	spyOn(ajax, 'success');
+	it('async callback', function () {
+	    runs(function () {
+	        _toAjax(ajax);
+	    });
+	    waitsFor(function () {     //判断回调函数是否被执行即可完成异步测试
+	        return ajax.success.callCount > 0;
+	    });
+	    runs(function () {
+	        expect(cb).toBeTruthy();
+	    });
+	});
+	如此，只要在waitsFor中判断回调函数是否被调用了即可完成异步测试。上面代码中我使用一个方法名直接代替了ajax请求方法来缩减不必要的代码。在第一个runs方法中发出了一个ajax请求，然后在waitsFor中等待其被调用，当第二个runs执行时说明回调函数已经被调用了，进行测试。
+
 ###	组件创建
 	beforeEach(async(() => {
 	  TestBed.configureTestingModule({    //在beforeEach中调用configureTestingModule,以便在TestBed可以在运行每个测试之前都把自己重置未初始化状态

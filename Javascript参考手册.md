@@ -147,8 +147,8 @@
 	```
 	stringObject.substring(start,stop)//开始索引(从0开始计数)到结束索引之前的片段(不包括stop索引的这个元素)
 	<script type="text/javascript">
-		var str="Hello world!"
-		document.write(str.substring(3,7))
+		var str="Hello world!";
+		document.write(str.substring(3,7));      //lo w
 	</script>	
 	```
 *	match()  找到一个或多个正则表达式的匹配
@@ -211,6 +211,7 @@
 	Window.confirm()
 	Window.alert()
 	Window.print()
+	Window.prompt(text,defaultText)    //提示用户输入的对话框
 	*
 	open()方法:新打开一个浏览器标签
 	*
@@ -575,3 +576,53 @@
 	constructor属性返回对创建此对象的数组函数的引用，就是返回对象相对应的构造函数。
 	arr=[];
 	console.log(arr.constructor == Array);	
+
+### Cookie
+*	创建cookie
+	```
+	document.cookie="username=John Doe";
+	function setCookie(cname,cvalue,exdays){
+		var d=new Date();
+		d.setTime(d.getTime()+exdays*24*60*60*1000);	//30天有效期
+		var expires="expires"+d.toGMTString();
+		document.cookie="username=John Doe;"+expires;
+	}	
+	```
+*	读取cookie
+	```
+	document.cookie   //以字符串的方式返回所有的cookie,类型格式:cookie1=value1,cookie2=value2,cookie3=value3;
+	一个函数用户返回指定cookie特定的值:
+	function getCookie(cname){
+		var name = cname + "=" ;
+	  	var ca = document.cookie.split(';');  
+	  	for(var i=0; i<ca.length; i++) {
+	    	var c = ca[i].trim();
+	    	if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+	  	}
+	  	return "";
+	}
+	```
+*	修改cookie
+	```
+	类似于创建cookie,旧的cookie将被覆盖
+	document.cookie="username=John Smith;expires=Thu,18,Dec,2013 12:00:00 GMT;path=/";
+	```
+*	检测cookie
+	```
+	function checkCookie()
+	{
+	  var username=getCookie("username");
+	  if (username!="")
+	  {
+	    alert("Welcome again " + username);
+	  }
+	  else 
+	  {
+	    username = prompt("Please enter your name:","");
+	    if (username!="" && username!=null)
+	    {
+	      setCookie("username",username,365);
+	    }
+	  }
+	}
+	```	
