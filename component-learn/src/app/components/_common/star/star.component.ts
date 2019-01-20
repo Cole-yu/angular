@@ -27,7 +27,7 @@ export class StarComponent implements OnInit,OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.stars=[];
     for (let i=1;i<=5;i++) {
-      this.stars.push(i>this.rating);
+      this.stars.push(i>this.rating);  // [false,false,true,true]  元素为布尔型的数组
     }
     console.log(this.stars);
   }

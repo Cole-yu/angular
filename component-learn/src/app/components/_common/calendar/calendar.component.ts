@@ -131,4 +131,11 @@ export class CalendarComponent implements OnInit {
   public fnGetReleaseResult(): void {
   }
 
+  // todo:releaseAgenda在cy项目中是个组件
+  public  releaseAgenda={
+    show:function (txt) {
+      console.log(txt);
+    }
+  }
+
 }

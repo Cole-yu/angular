@@ -30,7 +30,7 @@ export class AlertComponent implements OnInit {
 
     setTimeout(() => {
       this.alert.show = false;
-      this.alert.msg = '';
+      this.alert.msg = '这是一段提醒文字';
     }, 2000);
   }
 
