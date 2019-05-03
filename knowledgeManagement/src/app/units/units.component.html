@@ -1,0 +1,32 @@
+<div class="main">
+  <div class="header">
+    <div class="icon">
+      <i class="fa fa-arrow-left fa-2x"></i>
+      <i class="fa fa-home fa-2x" routerLink="/home"></i>
+    </div>
+    <div class="title"><span *ngFor="let item of units">{{item.Code}}</span></div>
+    <div class="attention" (click)="show()"><i class="fa fa-navicon fa-lg"></i></div>
+    <div *ngIf="flag==true">
+      <ul class="menu" *ngFor="let item of navbar">
+        <li><a href="#">{{item.name}}</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="content">
+    <ul>
+      <li *ngFor="let item of navbar">
+        <div><i class="fa fa-list-ul fa-2x"></i> <span class="item">{{item.name}}</span></div>
+        <div class="item-all">
+          <div class="item-one">
+            <div>{{unitId}}</div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="footer">
+
+  </div>
+</div>
+
+

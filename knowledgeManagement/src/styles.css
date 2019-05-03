@@ -1,0 +1,37 @@
+/* You can add global styles to this file, and also import other style files */
+div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, p, blockquote, th, td, ol, ul, li, img, input {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+ul, li {
+  list-style: none;
+}
+
+img {
+  border: 0 none;
+  vertical-align: top;
+}
+
+*, *::before, *::after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 400;
+}
+
+body {
+  color: #363636;
+  word-wrap: break-word;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 7.5rem;
+  font-size: 12px;
+  line-height: 1.42857;
+  overflow-x: hidden;
+  font-family: Helvetica Neue, Helvetica, Arial, "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+}

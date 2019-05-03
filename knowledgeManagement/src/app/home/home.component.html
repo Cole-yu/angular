@@ -1,0 +1,47 @@
+<div class="main">
+  <div class="header">
+    <div class="logo">
+    </div>
+    <input class="search-input" placeholder="" *ngIf="flag==true" (blur)="flag=false">
+    <i class="fa fa-search fa-2x" id="search-icon" (click)="show()"></i>
+  </div>
+  <div class="content">
+    <div class="banner"></div>
+    <ul>
+      <li *ngFor="let item of units" [routerLink]="['/unit',item.id]">
+        <div class="shape">
+          <div class="unit-icon">
+            <img src="{{item.imgURL}}">
+          </div>
+          <div class="unit-body">
+            <div class="unit-title">{{item.title}}</div>
+            <div class="unit-content">
+              <div class="records">
+                <span class="records-num">{{item.records}}</span>条记录
+              </div>
+              <div class="following">
+                <span class="following-num">{{item.following}}</span>人关注
+              </div>
+              <div class="new-know">
+                <div class="know-content">
+                  {{item.news}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="footer">
+    <ul class="menu">
+      <li *ngFor="let item of menus">
+        <div class="item">
+          <i class="{{item.class}}"></i>
+          <div class="item-name">{{item.name}}</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="top"></div>
+</div>
